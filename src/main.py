@@ -7,8 +7,7 @@ connection = DB.databaseConnection()
 
 @app.route("/")
 def index():
-    connection.fetchHierarchy()
-    hierarchy = connection.getHierarchy()
+    hierarchy = connection.fetchHierarchy()
     ids = connection.getIDs()
     tabs = []
     for id in ids.keys():

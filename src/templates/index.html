@@ -11,19 +11,19 @@
     <div id="{{ tab[0] }}" class="tabcontent">
         <ul>
         {% for item, subitemDict in hierarchy[tab[0]].items() %}
-            <li>{{ ids[item]["title"] }}
+            <li><a href="{{ item }}">{{ ids[item]["title"] }}</a>
                 {% if subitemDict %}
                 <ul>
                     {% for item, subitemDict in subitemDict.items() %}
-                    <li>{{ ids[item]["title"] }}
+                    <li><a href="{{ item }}">{{ ids[item]["title"] }}</a>
                         {% if subitemDict %}
                         <ul>
                             {% for item, subitemDict in subitemDict.items() %}
-                            <li>{{ ids[item]["title"] }}
+                            <li><a href="{{ item }}">{{ ids[item]["title"] }}</a>
                                 {% if subitemDict %}
                                 <ul>
                                     {% for item, subitemDict in subitemDict.items() %}
-                                    <li>{{ ids[item]["title"] }}</li>
+                                    <a href="{{ item }}">{{ ids[item]["title"] }}</a>
                                     {% endfor %}
                                 </ul>
                                 {% endif %}
