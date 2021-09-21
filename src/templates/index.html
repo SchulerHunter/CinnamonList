@@ -1,0 +1,43 @@
+{% extends "boiler.html" %}
+{% block title %}Cinnamon List{% endblock %}
+{% block content %}
+    <div class="tab">
+        {% for tab in tabs %}
+        <button class="tablinks" onclick="openTab(event, '{{ tab[0] }}')">{{ tab[1] }}</button>
+        {% endfor %}
+    </div>
+
+    {% for tab in tabs %}
+    <div id="{{ tab[0] }}" class="tabcontent">
+        <ul>
+        {% for item, subitemDict in hierarchy[tab[0]].items() %}
+            <li>{{ ids[item]["title"] }}
+                {% if subitemDict %}
+                <ul>
+                    {% for item, subitemDict in subitemDict.items() %}
+                    <li>{{ ids[item]["title"] }}
+                        {% if subitemDict %}
+                        <ul>
+                            {% for item, subitemDict in subitemDict.items() %}
+                            <li>{{ ids[item]["title"] }}
+                                {% if subitemDict %}
+                                <ul>
+                                    {% for item, subitemDict in subitemDict.items() %}
+                                    <li>{{ ids[item]["title"] }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
+{% endblock %}

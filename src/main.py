@@ -1,11 +1,22 @@
 from flask import Flask, render_template
+from tools import database as DB
 
 app = Flask(__name__)
 
-@app.route("/")
-def hello_world():
-    return render_template("test.html", title="Hello, World!", username="World!")
+connection = DB.databaseConnection()
 
-@app.route("/<user>")
-def hello_user(user):
-    return render_template("test.html", title=f"Hello, {user}!", username=user)
+@app.route("/")
+def index():
+    connection.fetchHierarchy()
+    hierarchy = connection.getHierarchy()
+    ids = connection.getIDs()
+    tabs = []
+    for id in ids.keys():
+        if id in hierarchy.keys():
+            tabs.append((id, ids[id]["title"]))
+    return render_template("index.html", tabs=tabs, hierarchy=hierarchy, ids=ids)
+
+@app.route("/<int:id>")
+def fetch_id(id):
+    hierarchy = connection.getHierarchy()
+    return render_template("definition.html", title=f"{connection.getIDs()[id]}", hierarchy=hierarchy)
