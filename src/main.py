@@ -10,9 +10,9 @@ def index():
     hierarchy = connection.fetchHierarchy()
     ids = connection.getIDs()
     tabs = []
-    for id in ids.keys():
-        if id in hierarchy.keys():
-            tabs.append((id, ids[id]["title"]))
+    for id, info in ids.items():
+        if info["parent"] is None:
+            tabs.append((id, info["title"]))
     return render_template("index.html", tabs=tabs, hierarchy=hierarchy, ids=ids)
 
 @app.route("/<int:id>")
