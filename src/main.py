@@ -19,3 +19,17 @@ def index():
 def fetch_id(id):
     hierarchy = connection.getHierarchy()
     return render_template("definition.html", title=f"{connection.getIDs()[id]}", hierarchy=hierarchy)
+
+# Array decode function
+def array_decode(s):
+    result = s.split()
+    return result
+
+# Array encode function
+def array_encode(s):
+    result = "".join(s)
+    return result
+
+# content = ''
+# with open('filename') as f:
+#     content = f.read()
