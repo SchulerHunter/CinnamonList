@@ -15,15 +15,18 @@ class databaseConnection:
             exit
         return conn
 
+    # Uses an array of dictionary keys to map an item into a dictionary
     def setInHierarchy(self, keyMap):
         reduce(operator.getitem, keyMap[:-1], self._hierarchy)[keyMap[-1]] = {}
 
+    # Returns the object associated to an item in the data table
     def fetchItem(self, id):
         cursor = self.connectDB().cursor()
-        cursor.execute(f"SELECT * FROM hierarchy WHERE id={id}")
+        cursor.execute(f"SELECT * FROM data WHERE id={id}")
         rows = cursor.fetchall()
         return rows[0]
 
+    # Returns the hierarchy of terms associated in the hierarchy table
     def fetchHierarchy(self):
         cursor = self.connectDB().cursor()
         cursor.execute("SELECT * FROM hierarchy")
@@ -51,3 +54,6 @@ class databaseConnection:
         if not self._ids:
             self.fetchHierarchy()
         return self._ids
+
+    def getItem(self, id):
+        self.fetchItem(id)
