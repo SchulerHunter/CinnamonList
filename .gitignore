@@ -1,7 +1,6 @@
 *.pyc
 /backend/db.sqlite3
 .DS_Store
-.env
 */settings/local.py
 /staticfiles/*
 /mediafiles/*
@@ -20,7 +19,7 @@ __pycache__/
 
 # npm
 node_modules/
-npm-debug.log
+npm-debug.log*
 
 # Webpack
 /frontend/bundles/*
@@ -45,3 +44,24 @@ spritesmith.scss
 
 # templated email
 tmp_email/
+
+# dependencies
+node_modules
+.pnp
+.pnp.js
+
+# testing
+coverage
+
+# production
+build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+yarn-debug.log*
+yarn-error.log*
