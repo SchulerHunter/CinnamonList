@@ -55,7 +55,6 @@ def search(keyword):
     result = []
     test.execute("SELECT DISTINCT terms, definition, synnonyms, acronyms FROM data WHERE definition LIKE '%'||:key||'%' OR synnonyms LIKE '%'||:key||'%' OR acronyms LIKE '%'||:key||'%' OR terms LIKE '%'||:key||'%'", {'key': keyword})
     result = test.fetchall()
-    print(result)
 
     if not result: 
         return None
