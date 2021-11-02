@@ -26,30 +26,27 @@ function Main(){
             <Navbar />
 
             {/* Section2: Main Body */}
-            <Box sx={{ flexGrow: 1 }} p={2} pt={5}>
-                <Grid container spacing={8}>
+            <Box sx={{ flexGrow: 1 }} pt={5} pb={5} pl={2}>
+                <Grid container spacing={5}>
 
                     {/* Section2.1: Sidebar */}
                     <Grid item md={3}>
-                        <Listi sx={{bgcolor: 'red'}} data={data} setCurrent={setCurrent}/>
+                        <Listi data={data} setCurrent={setCurrent}/>
                     </Grid>
 
                     {/* Section2.2: Information Area */}
-                    <Grid item md={7} p={2}>
-                        <Stack spacing={4}>
+                    <Grid item md={7}>
+                        <Stack spacing={2}>
 
                             {/* Section2.2.1: Terms Info */}
-                            <Card sx={{boxShadow: 3}} pb={2}>
-                                <CardContent>
-                                    <h2>Term</h2>
-                                    <ul><li>Allocation Analysis</li></ul>
-                                </CardContent>
-                            </Card>
+                            <Grid container justifyContent="center" bgcolor={'#f5f5f5'} borderRadius='5px' sx={{boxShadow: 3}}>
+                                <h2>Allocation Analysis</h2>
+                            </Grid>
 
                             {/* Section2.2.2: Definition Info */}
-                            <Card sx={{boxShadow: 3}} pb={2}>
+                            <Card sx={{boxShadow: 3}}>
                                 <CardContent>
-                                    <h2>Definition</h2>
+                                    <h2>&ensp;Definition</h2>
                                     <ul>
                                         {current["def"].map(thing => (<li style={{lineHeight: 2}} key={thing}>{thing}</li>))}
                                     </ul>
@@ -57,9 +54,9 @@ function Main(){
                             </Card>
                             
                             {/* Section2.2.3: Synonym Info */}
-                            <Card sx={{boxShadow: 3}} pb={2}>
+                            <Card sx={{boxShadow: 3}}>
                                 <CardContent>
-                                    <h2>Synonym</h2>
+                                    <h2>&ensp;Synonym</h2>
                                     <ul>
                                         {current["syn"].map(thing => (<li style={{lineHeight: 2}} key={thing}>{thing}</li>))}
                                     </ul>
@@ -67,9 +64,9 @@ function Main(){
                             </Card>
 
                             {/* Section2.2.2: Acronym Info */}
-                            <Card sx={{boxShadow: 3}} pb={2}>
+                            <Card sx={{boxShadow: 3}}>
                                 <CardContent>
-                                    <h2>Acronym</h2>
+                                    <h2>&ensp;Acronym</h2>
                                     <ul>
                                         {current["acy"].map(thing => (<li style={{lineHeight: 2}} key={thing}>{thing}</li>))}
                                     </ul>

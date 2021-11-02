@@ -6,7 +6,7 @@ import imagePath from './EPRI_logo_2021_RGB.png'
 function Navbar(){
     return(
         // Navigation bar setting
-        <Box container sx={{ position: 'sticky', zIndex: 100, bgcolor: '#f5f5f5', boxShadow: 3, top: 0}} pt={'1rem'} pb={'1rem'}
+        <Box container sx={{ position: 'sticky', zIndex: 100, bgcolor: '#f5f5f5', boxShadow: 3, top: 0}} pt={'.5rem'} pb={'.5rem'}
             display={'flex'} 
             flexDirection={'row'} 
             alignItems="center" 
