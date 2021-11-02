@@ -11,7 +11,7 @@ export default function About(){
                     <Grid item md={2}></Grid>
                     <Grid item md={8}>
                         <Stack spacing={2}>
-                            <Card>
+                            <Card sx={{boxShadow: 3}}>
                                 <CardContent>
                                     <h1>About ERPI</h1>
                                     <p style={{lineHeight: 2}}>The Electric Power Research Institute (EPRI) conducts research, development, 
@@ -23,7 +23,7 @@ export default function About(){
                                 </CardContent>
                             </Card>
 
-                            <Card>
+                            <Card sx={{boxShadow: 3}}>
                                 <CardContent>
                                     <h1>About the ERPI Dictionary</h1>
                                     <p style={{lineHeight: 2}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 

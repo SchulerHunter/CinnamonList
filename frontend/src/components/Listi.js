@@ -40,14 +40,14 @@ export default function Listi(props){
         //     </CardContent>
         // </Card>
 
-        <Card>
+        <Card sx={{bgcolor: '#f5f5f5'}}>
             <CardContent>
                 <List
-                    sx={{ bgcolor: 'background.paper'}}
+                    sx={{ bgcolor: '#f5f5f5'}}
                     component="nav"
                     aria-labelledby="nested-list-subheader"
                     subheader={
-                    <ListSubheader component="div" id="nested-list-subheader">
+                    <ListSubheader sx={{bgcolor: '#f5f5f5'}} component="div" id="nested-list-subheader">
                         EPRI Navigation
                     </ListSubheader>
                     }>
@@ -62,7 +62,7 @@ export default function Listi(props){
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding>
                             <ListItemButton sx={{ pl: 4 }}>
-                                <ListItemText primary="Allocation Analysis" />
+                                <ListItemText primary="Sublevel 1" />
                             </ListItemButton>
                             <ListItemButton sx={{ pl: 4 }}>
                                 <ListItemText primary="Sublevel 2" />
@@ -81,9 +81,22 @@ export default function Listi(props){
                             <ListItemButton sx={{ pl: 4 }}>
                                 <ListItemText primary="Sublevel 1" />
                             </ListItemButton>
-                            <ListItemButton sx={{ pl: 4 }}>
+
+                            <ListItemButton onClick={handleClick} sx={{ pl: 4 }}>
                                 <ListItemText primary="Sublevel 2" />
+                                {open ? <ExpandLess /> : <ExpandMore />}
                             </ListItemButton>
+                            <Collapse in={open} timeout="auto" unmountOnExit>
+                                <List component="div" disablePadding>
+                                    <ListItemButton sx={{ pl: 8 }}>
+                                        <ListItemText primary="Allocation Analysis" />
+                                    </ListItemButton>
+                                    <ListItemButton sx={{ pl: 8 }}>
+                                        <ListItemText primary="Term 2" />
+                                    </ListItemButton>
+                                </List>
+                            </Collapse>
+
                             <ListItemButton sx={{ pl: 4 }}>
                                 <ListItemText primary="Sublevel 3" />
                             </ListItemButton>

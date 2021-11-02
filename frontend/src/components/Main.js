@@ -30,16 +30,16 @@ function Main(){
                 <Grid container spacing={8}>
 
                     {/* Section2.1: Sidebar */}
-                    <Grid item md={2.5}>
-                        <Listi data={data} setCurrent={setCurrent}/>
+                    <Grid item md={3}>
+                        <Listi sx={{bgcolor: 'red'}} data={data} setCurrent={setCurrent}/>
                     </Grid>
 
                     {/* Section2.2: Information Area */}
-                    <Grid item md={8} p={2}>
-                        <Stack spacing={5}>
+                    <Grid item md={7} p={2}>
+                        <Stack spacing={4}>
 
                             {/* Section2.2.1: Terms Info */}
-                            <Card pb={2}>
+                            <Card sx={{boxShadow: 3}} pb={2}>
                                 <CardContent>
                                     <h2>Term</h2>
                                     <ul><li>Allocation Analysis</li></ul>
@@ -47,7 +47,7 @@ function Main(){
                             </Card>
 
                             {/* Section2.2.2: Definition Info */}
-                            <Card pb={2}>
+                            <Card sx={{boxShadow: 3}} pb={2}>
                                 <CardContent>
                                     <h2>Definition</h2>
                                     <ul>
@@ -57,7 +57,7 @@ function Main(){
                             </Card>
                             
                             {/* Section2.2.3: Synonym Info */}
-                            <Card pb={2}>
+                            <Card sx={{boxShadow: 3}} pb={2}>
                                 <CardContent>
                                     <h2>Synonym</h2>
                                     <ul>
@@ -67,7 +67,7 @@ function Main(){
                             </Card>
 
                             {/* Section2.2.2: Acronym Info */}
-                            <Card pb={2}>
+                            <Card sx={{boxShadow: 3}} pb={2}>
                                 <CardContent>
                                     <h2>Acronym</h2>
                                     <ul>
@@ -80,7 +80,6 @@ function Main(){
                 </Grid>
             </Box>
 
-            {/* **************** We might need a footer here (section3) **************** */}
             <Footer />
         </div>
     )

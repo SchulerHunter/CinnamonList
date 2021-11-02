@@ -33,24 +33,24 @@ function Navbar(){
 
                     {/* Home button setting */}
                     <Grid mr={'1rem'}>
-                        <Link to="/" style={{textDecoration: 'none'}}><Button>Home</Button></Link>
+                        <Link to="/" style={{textDecoration: 'none'}}><Button><b>Home</b></Button></Link>
                     </Grid>
 
                     {/* Add Terms button setting */}
                     <Grid mr={'1rem'}>
-                        <Link to="/" style={{textDecoration: 'none'}}><Button>Add Terms</Button></Link>
+                        <Link to="/" style={{textDecoration: 'none'}}><Button><b>Add Terms</b></Button></Link>
                     </Grid>
 
                     {/* About button setting */}
                     <Grid>
-                        <Link to="/about" style={{textDecoration: 'none'}}><Button>About</Button></Link>
+                        <Link to="/about" style={{textDecoration: 'none'}}><Button><b>About</b></Button></Link>
                     </Grid>
 
                 </Grid>
 
                 {/* Right part: Search bar setting ************** NEED: work with backend ************** */}
-                <Grid mr={'3rem'}>
-                            <TextField style={{width: '12rem'}} id="outlined-basic" label="Search" variant="outlined" />
+                <Grid mr={'3rem'} >
+                    <TextField style={{ width: '12rem'}} id="outlined-basic" label={"Search"} variant="outlined" />
                 </Grid>
         </Box>
     )

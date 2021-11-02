@@ -8,12 +8,14 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 
-function Navbar(){
+function Footer(){
     return(
         // Footer setting
         <Box container sx={{ zIndex: 100, bgcolor: '#f5f5f5', boxShadow: 3, bottom: 0}}>
 
                 <Grid display={'flex'} ml={'7rem'} mr={'7rem'} height={'12rem'}
+                    borderTop={2}
+                    borderColor={'#D3D3D3'}
                     flexDirection={'row'} 
                     alignItems="center" 
                     justifyContent="space-between">
@@ -54,4 +56,4 @@ function Navbar(){
         </Box>
     )
 }
-export default Navbar
+export default Footer
