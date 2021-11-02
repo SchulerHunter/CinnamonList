@@ -3,6 +3,7 @@ import React from 'react'
 import {useState, useEffect} from 'react'
 import Navbar from './Navbar'
 import Listi from './Listi'
+import Footer from'./footer'
 
 {/* **************** NEED: Responsive web?(for smaller screens, now it's only normal in full screen) **************** */}
 function Main(){
@@ -80,6 +81,7 @@ function Main(){
             </Box>
 
             {/* **************** We might need a footer here (section3) **************** */}
+            <Footer />
         </div>
     )
 }
