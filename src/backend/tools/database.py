@@ -10,7 +10,7 @@ class databaseConnection:
 
     def connectDB(self):
         try:
-            conn = sqlite3.connect("../CinnamonList.db")
+            conn = sqlite3.connect("../../CinnamonList.db")
         except:
             exit
         return conn
