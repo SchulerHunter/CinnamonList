@@ -1,25 +1,17 @@
-import {Box, Grid, TextField, Card, CardContent, Typography, Stack} from '@mui/material'
-import React from 'react'
-import {useState, useEffect} from 'react'
+import {Box, Grid, Card, CardContent, Stack} from '@mui/material'
+import {getHierarchy} from './utility/apiConnection'
+import {React, useState} from 'react'
 import Navbar from './Navbar'
-import Listi from './Listi'
-import Footer from'./footer'
+import HierarchyList from './HierarchyList'
+import Footer from'./Footer'
 
 {/* **************** NEED: Responsive web?(for smaller screens, now it's only normal in full screen) **************** */}
-function Main(){
-    {/* **************** NEED: Read data from database(through JSON?) instead of typing here **************** */}
-
-    // Data for sidebar(each levels)
-    //const [data, setData] = useState({"Animal":{"Cordata":{"Mammal":["Homo Sapien", "Cow", "Sheep"], "Aves":["Chicken", "Duck", "Humming Bird"]}, "Arthropod":["Shrimp", "Crab", "Lobster"]}, "Fungi":{"Mucoromycota":["Bread Mold", "Tinea Pedis"]}, "Plant":{"Trach":{"Poales":["Wheat", "Barley"], "Fagales":["Oak", "Maple"]}}})
-    const [data, setData] = useState({"AFW":{"children":["animal","fungi","plant"]},"animal":{"parent":"start","children":["cordata","arthropod"]},"cordata":{"parent":"animal","children":["mammal","aves"]},"mammal":{"parent":"cordata","data":{"abbr":["mam","mammy"],"syn":["Warm Blooded","Harries"],"desc":["Warm Blooded, Hair and Fur"]}},"aves":{"parent":"cordata","data":{"abbr":["bir","bi"],"syn":["bird","birdy","flyers"],"desc":["Warm Blooded creatures of flight"]}},"arthropod":{"parent":"cordata","data":{"abbr":["arth","arthro"],"syn":["creepy crawlies","side walkers"],"desc":["Crustacians and other things"]}},"fungi":{"parent":"start","children":["mucoromycota"]},"mucoromycota":{"parent":"fungi","data":{"abbr":["muc","myco"],"syn":["lunch mold","mold"],"desc":["things that grow in dark places"]}},"plant":{"parent":"start","children":["trach"]},"trach":{"parent":"plant","children":["poales","fagales"]},"poales":{"parent":"trach","data":{"abbr":["gr","whe"],"syn":["grain","starch"],"desc":["grain family? wheat and barley"]}},"fagales":{"parent":"trach","data":{"abbr":["tr","tre"],"syn":["tree","grower"],"desc":["A round thing that goes to the sky"]}}})
-    
-    // Data for main page(Definition, Synonym, and Acronym)  ********** NEED: Terms as well **********
+function Main() {
     const [current, setCurrent] = useState({
         "def":["A mathematical tool used by Reliability Engineers to determine the reliability requirements for individual components or assemblies that would be needed to achieve the desired overall reliability goal for the system."],
         "syn":["Allocation Analysis Synonym Test1","Allocation Analysis Synonym Test2"],
         "acy":["Allocation Analysis Acronym Test1", "Allocation Analysis Acronym Test2", "Allocation Analysis Acronym Test3"]})
-    {/* **************** NEED: Read data from database(through JSON?) instead of typing here **************** */}
-    
+    const data = getHierarchy()
     return(
         <div>
             {/* Section1: Navigation Bar */}
@@ -31,7 +23,7 @@ function Main(){
 
                     {/* Section2.1: Sidebar */}
                     <Grid item md={3}>
-                        <Listi data={data} setCurrent={setCurrent}/>
+                        <HierarchyList data={data} setCurrent={setCurrent}/>
                     </Grid>
 
                     {/* Section2.2: Information Area */}
@@ -48,7 +40,7 @@ function Main(){
                                 <CardContent>
                                     <h2>&ensp;Definition</h2>
                                     <ul>
-                                        {current["def"].map(thing => (<li style={{lineHeight: 2}} key={thing}>{thing}</li>))}
+                                        {current["def"].map(def => (<li style={{lineHeight: 2}} key={def}>{def}</li>))}
                                     </ul>
                                 </CardContent>
                             </Card>
@@ -58,7 +50,7 @@ function Main(){
                                 <CardContent>
                                     <h2>&ensp;Synonym</h2>
                                     <ul>
-                                        {current["syn"].map(thing => (<li style={{lineHeight: 2}} key={thing}>{thing}</li>))}
+                                        {current["syn"].map(syn => (<li style={{lineHeight: 2}} key={syn}>{syn}</li>))}
                                     </ul>
                                 </CardContent>
                             </Card>
@@ -68,7 +60,7 @@ function Main(){
                                 <CardContent>
                                     <h2>&ensp;Acronym</h2>
                                     <ul>
-                                        {current["acy"].map(thing => (<li style={{lineHeight: 2}} key={thing}>{thing}</li>))}
+                                        {current["acy"].map(acy => (<li style={{lineHeight: 2}} key={acy}>{acy}</li>))}
                                     </ul>
                                 </CardContent>
                             </Card>
