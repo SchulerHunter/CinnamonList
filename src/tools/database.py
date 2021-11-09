@@ -23,8 +23,8 @@ class databaseConnection:
     def fetchItem(self, id):
         cursor = self.connectDB().cursor()
         cursor.execute(f"SELECT * FROM data WHERE id={id}")
-        rows = cursor.fetchall()
-        return rows[0]
+        term = cursor.fetchall()[0]
+        return {"id": term[0], "def": term[1], "syn": term[2], "acr": term[3], "term": term[4]}
 
     # Returns the hierarchy of terms associated in the hierarchy table
     def fetchHierarchy(self):
@@ -56,4 +56,20 @@ class databaseConnection:
         return self._ids
 
     def getItem(self, id):
-        self.fetchItem(id)
+        return self.fetchItem(id)
+
+    def searchKey(self, key):
+        # Retrieve results from naive search
+        cursor = self.connectDB().cursor()
+        cursor.execute("SELECT DISTINCT terms, definition, synnonyms, acronyms FROM data WHERE definition LIKE '%'||:key||'%' OR synnonyms LIKE '%'||:key||'%' OR acronyms LIKE '%'||:key||'%' OR terms LIKE '%'||:key||'%'", {'key': key})
+        results = cursor.fetchall()
+
+        # Create a ranking of the number of matches in data
+        rankedTerms = {1: [], 2: [], 3: [], 4:[]}
+        for term, definition, synonym, acronym in results:
+            boolList = [key in definition, key in synonym, key in acronym, key in term]
+            count = sum(boolList)
+            if count > 0:
+                rankedTerms[count].append(term)
+        
+        return rankedTerms

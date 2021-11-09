@@ -5,9 +5,9 @@ Because of a lack of energy industry standards, energy companies create their ow
 ## Development
 Since this python package is stored as a package, the `PYTHONPATH` environment variable must be updated to the working directory. This can be accomplished by running **one** of the two commands below.
 
-- `export PYTHONPATH="${PYTHONPATH}:.`
+- `export PYTHONPATH="${PYTHONPATH}:."`
 
-- `export PYTHONPATH=${PYTHONPATH}:/path/to/project/folder`
+- `export PYTHONPATH="${PYTHONPATH}:/path/to/project/folder"`
 
 For Flask to run correctly as well, the `FLASK_APP` environment variable must be set. This can be accomplished in a similar manner.
 
