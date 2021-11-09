@@ -1,22 +1,24 @@
 #!/usr/bin/python3
 
-from flask import Flask, render_template
+from flask import Flask
+from flask_cors import CORS
 from tools import database as DB
 
 app = Flask(__name__)
+CORS(app)
 
 connection = DB.databaseConnection()
 
-@app.route("/getHierarchy")
+@app.route("/getHierarchy",methods = ['POST'])
 def getHierarchy():
     # Returns id hierarchy of database items
     return connection.fetchHierarchy()
 
-@app.route("/getIDs")
+@app.route("/getIDs",methods = ['POST'])
 def getIDs():
     return connection.getIDs()
 
-@app.route("/getTabs")
+@app.route("/getTabs",methods = ['POST'])
 def getTabs():
     # Retuns tabs from database
     ids = connection.getIDs()
@@ -28,11 +30,11 @@ def getTabs():
     return {"root": tabs}
 
 # Route for definition page
-@app.route("/<int:id>")
+@app.route("/<int:id>",methods = ['POST'])
 def fetch_id(id):
     return connection.getItem(id)
 
-@app.route("/search/<key>")
+@app.route("/search/<key>",methods = ['POST'])
 def fetchSearch(key):
     return connection.searchKey(key)
 

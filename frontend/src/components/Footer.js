@@ -1,8 +1,7 @@
-import {Grid, Box, Button, CardMedia, TextField} from '@mui/material'
-import {Link} from 'react-router-dom'
+import {Grid, Box, CardMedia} from '@mui/material'
 import React from 'react'
 import SvgIcon from '@mui/material/SvgIcon';
-import imagePath from './EPRI_logo_2021_Black.png'
+import imagePath from './static/EPRI_logo_2021_Black.png'
 import TwitterIcon from '@mui/icons-material/Twitter';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import FacebookIcon from '@mui/icons-material/Facebook';
@@ -39,16 +38,16 @@ function Footer(){
 
                     {/* Footer Links */}
                     <Grid>
-                        <a style={{color: 'black', marginLeft: '.5rem'}} href="https://twitter.com/eprinews" target="_blank">
+                        <a style={{color: 'black', marginLeft: '.5rem'}} href="https://twitter.com/eprinews" target="_blank" rel="noreferrer">
                             <SvgIcon fontSize={'large'} component={TwitterIcon} />
                         </a>
-                        <a style={{color: 'black', marginLeft: '.5rem'}} href="https://www.linkedin.com/company/epri" target="_blank">
+                        <a style={{color: 'black', marginLeft: '.5rem'}} href="https://www.linkedin.com/company/epri" target="_blank" rel="noreferrer">
                             <SvgIcon fontSize={'large'} component={LinkedInIcon} />
                         </a>
-                        <a style={{color: 'black', marginLeft: '.5rem'}} href="https://www.facebook.com/EPRI/" target="_blank">
+                        <a style={{color: 'black', marginLeft: '.5rem'}} href="https://www.facebook.com/EPRI/" target="_blank" rel="noreferrer">
                             <SvgIcon fontSize={'large'} component={FacebookIcon} />
                         </a>
-                        <a style={{color: 'black', marginLeft: '.5rem'}} href="https://www.youtube.com/channel/UCctcciH1NrAGpwMnKwvnLgQ" target="_blank">
+                        <a style={{color: 'black', marginLeft: '.5rem'}} href="https://www.youtube.com/channel/UCctcciH1NrAGpwMnKwvnLgQ" target="_blank" rel="noreferrer">
                             <SvgIcon fontSize={'large'} component={YouTubeIcon} />
                         </a>
                     </Grid>
