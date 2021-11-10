@@ -14,11 +14,12 @@ export default class App extends React.Component {
     this.state = {
       page: 1, // 1 with data 0 = Home, 1 with data not 0 = Content, 2 = add form, 3 = about page
       data: 0, // Specifies which definitions to show when page = 1, same as ID column in database
+      idPath:[],
+      content:{},
       subTabs:{},
       IDs:{},
       hierarchy:{},
-      subHierarchy:{},
-      content:{}
+      subHierarchy:{}
     }
   }
 
@@ -43,35 +44,22 @@ export default class App extends React.Component {
     })
   }
 
-  // Callback for selecting an item from the search results
-  searchBoxCallback = (dataID) => {
+  // Callback to change the data when new data is selected
+  dataCallback = (dataID) => {
     var currID = dataID
+    var idPath = [currID]
     while (this.state.IDs[currID].parent !== null) {
       currID = this.state.IDs[currID].parent
+      idPath.push(String(currID))
     }
+
     getItem(dataID).then((result) => {
       this.setState({
-        page:1,
+        page: 1,
         data:dataID,
+        idPath:idPath,
         content:result,
         subHierarchy:this.state.hierarchy[currID]
-      })
-    })
-  }
-
-  // Callback to change the data when new data is selected from the hierarchy or navbar
-  dataCallback = (dataID) => {
-    var subHierarchy = this.state.subHierarchy
-    // Checks that the hierarchy list doesn't change unless a new top level term is selected
-    if (dataID in Object.keys(this.state.hierarchy)) {
-      subHierarchy = this.state.hierarchy[dataID]
-    }
-
-    getItem(dataID).then((result) => {
-      this.setState({
-        data:dataID,
-        content:result,
-        subHierarchy:subHierarchy
       })
     })
   }
@@ -84,12 +72,12 @@ export default class App extends React.Component {
           page={this.state.page}
           subTabs={this.state.subTabs}
           pageCallback={this.navbarPageCallback}
-          searchBoxCallback={this.searchBoxCallback}
           dataCallback={this.dataCallback}
         />
           { this.state.page === 1 && this.state.data === 0 && <Home /> }
           { this.state.page === 1 && this.state.data !== 0 &&
           <Content
+            idPath={this.state.idPath}
             content={this.state.content}
             hierarchy={this.state.subHierarchy}
             IDs={this.state.IDs}

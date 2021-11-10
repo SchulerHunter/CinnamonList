@@ -13,6 +13,7 @@ export default class Content extends React.Component {
                     {/* Section 1: Sidebar */}
                     <Grid item md={3}>
                         <HierarchyList
+                            idPath={this.props.idPath}
                             hierarchy={this.props.hierarchy}
                             IDs={this.props.IDs}
                             dataCallback={this.props.dataCallback}

@@ -3,16 +3,7 @@ import {Collapse, Divider, List, ListItemButton, ListItemText} from '@mui/materi
 import {ExpandLess, ExpandMore} from '@mui/icons-material'
 
 export default class ListItem extends React.Component{
-    constructor(props) {
-        super(props)
-        this.state = {
-            expanded: false,
-        }
-    }
-
     clickHandler = () => {
-        const expanded = !this.state.expanded
-        this.setState({expanded: expanded})
         this.props.dataCallback(this.props.id)
     }
 
@@ -24,18 +15,19 @@ export default class ListItem extends React.Component{
                 <ListItemText primary={this.props.IDs[this.props.id].term} />
                 { Object.keys(this.props.hierarchy).length > 0 && 
                     <div>
-                        { this.state.expanded ? <ExpandLess /> : <ExpandMore /> }
+                        { this.props.idPath.includes(this.props.id) ? <ExpandLess /> : <ExpandMore /> }
                     </div>
                 }
             </ListItemButton>
 
             { Object.keys(this.props.hierarchy).length > 0 && 
-                <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+                <Collapse in={this.props.idPath.includes(this.props.id)} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
                         { Object.keys(this.props.hierarchy).map(id => (
                             <ListItem 
                                 key={id}
                                 id={id}
+                                idPath={this.props.idPath}
                                 pl={this.props.pl+2}
                                 IDs={this.props.IDs}
                                 hierarchy={this.props.hierarchy[id]}

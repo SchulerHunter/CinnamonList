@@ -59,7 +59,7 @@ export default class SearchBox extends React.Component {
             showResults: false,
             results: {}
         })
-        this.props.searchBoxCallback(id)
+        this.props.dataCallback(id)
     }
 
     render() {
@@ -81,11 +81,11 @@ export default class SearchBox extends React.Component {
                         placement="bottom-start"
                         disablePortal
                         >
-                        <Paper style={{maxHeight: '75vh', overflowY: "auto"}}>
+                        <Paper style={{maxHeight: '75vh', overflowY: "auto", overflowX: "hidden", paddingRight: "13px"}}>
                             <MenuList id="composition-menu">
                                 {Object.keys(this.state.results).reverse().map((matches) => (
                                     this.state.results[matches].map((result) => (
-                                        <MenuItem key={result[0]} value={result[0]} onClick={() => {this.resultClick(result[0])}}>
+                                        <MenuItem key={result[0]} value={result[0]} onClick={() => {this.resultClick(String(result[0]))}}>
                                             <ListItemText>{result[1]}</ListItemText>
                                         </MenuItem>
                                     ))

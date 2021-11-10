@@ -25,6 +25,7 @@ export default class HierarchyList extends React.Component {
                                     key={id}
                                     id={id}
                                     pl={0}
+                                    idPath={this.props.idPath}
                                     IDs={this.props.IDs}
                                     hierarchy={this.props.hierarchy[id]}
                                     dataCallback={this.props.dataCallback}
