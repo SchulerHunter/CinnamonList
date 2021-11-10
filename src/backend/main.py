@@ -9,16 +9,16 @@ CORS(app)
 
 connection = DB.databaseConnection()
 
-@app.route("/getHierarchy",methods = ['POST'])
+@app.route("/getHierarchy", methods = ['GET', 'POST'])
 def getHierarchy():
     # Returns id hierarchy of database items
     return connection.fetchHierarchy()
 
-@app.route("/getIDs",methods = ['POST'])
+@app.route("/getIDs", methods = ['GET', 'POST'])
 def getIDs():
     return connection.getIDs()
 
-@app.route("/getTabs",methods = ['POST'])
+@app.route("/getTabs", methods = ['GET', 'POST'])
 def getTabs():
     # Retuns tabs from database
     ids = connection.getIDs()
@@ -26,26 +26,29 @@ def getTabs():
     # Create lists of tabs based on items with no parent item
     for id, info in ids.items():
         if info["parent"] is None:
-            tabs.append((id, info["title"]))
+            tabs.append((id, info["term"]))
     return {"root": tabs}
 
 # Route for definition page
-@app.route("/<int:id>",methods = ['POST'])
+@app.route("/<int:id>",methods = ['GET', 'POST'])
 def fetch_id(id):
-    return connection.getItem(id)
+    item = connection.getItem(id)
+    item["syn"] = arrayDecode(item["syn"])
+    item["acr"] = arrayDecode(item["acr"])
+    return item
 
-@app.route("/search/<key>",methods = ['POST'])
+@app.route("/search/<key>",methods = ['GET', 'POST'])
 def fetchSearch(key):
-    return connection.searchKey(key)
+    return connection.searchKey(key.lower())
 
 # Decodes stringified array back to array
-def array_decode(string):
-    arr = string.split()
+def arrayDecode(string):
+    arr = string.split(",")
     return arr
 
 # Encodes array to string
-def array_encode(arr):
-    result = " ".join(arr)
+def arrayEncode(arr):
+    result = ",".join(arr)
     return result
 
 if __name__ == "__main__":
