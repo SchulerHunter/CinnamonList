@@ -43,6 +43,22 @@ export default class App extends React.Component {
     })
   }
 
+  // Callback for selecting an item from the search results
+  searchBoxCallback = (dataID) => {
+    var currID = dataID
+    while (this.state.IDs[currID].parent !== null) {
+      currID = this.state.IDs[currID].parent
+    }
+    getItem(dataID).then((result) => {
+      this.setState({
+        page:1,
+        data:dataID,
+        content:result,
+        subHierarchy:this.state.hierarchy[currID]
+      })
+    })
+  }
+
   // Callback to change the data when new data is selected from the hierarchy or navbar
   dataCallback = (dataID) => {
     var subHierarchy = this.state.subHierarchy
@@ -68,6 +84,7 @@ export default class App extends React.Component {
           page={this.state.page}
           subTabs={this.state.subTabs}
           pageCallback={this.navbarPageCallback}
+          searchBoxCallback={this.searchBoxCallback}
           dataCallback={this.dataCallback}
         />
           { this.state.page === 1 && this.state.data === 0 && <Home /> }

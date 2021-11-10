@@ -47,7 +47,6 @@ export default class SearchBox extends React.Component {
 
     searchClick = (event) => {
         const target = event.currentTarget
-        console.log(target)
         this.setState({
             anchorEl: target,
             showResults: false
@@ -60,6 +59,7 @@ export default class SearchBox extends React.Component {
             showResults: false,
             results: {}
         })
+        this.props.searchBoxCallback(id)
     }
 
     render() {
@@ -81,7 +81,7 @@ export default class SearchBox extends React.Component {
                         placement="bottom-start"
                         disablePortal
                         >
-                        <Paper style={{maxHeight: '75vh', overflowY: "scroll"}}>
+                        <Paper style={{maxHeight: '75vh', overflowY: "auto"}}>
                             <MenuList id="composition-menu">
                                 {Object.keys(this.state.results).reverse().map((matches) => (
                                     this.state.results[matches].map((result) => (

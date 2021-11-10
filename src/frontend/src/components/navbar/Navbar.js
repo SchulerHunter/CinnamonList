@@ -53,7 +53,7 @@ export default class Navbar extends React.Component {
 
                         {/* Right part: Search bar setting */}
                         <Grid mr={'3rem'} >
-                            <SearchBox />
+                            <SearchBox searchBoxCallback={this.props.searchBoxCallback}/>
                         </Grid>
                 </Box>
                 { this.props.page === 1 && Object.keys(this.props.subTabs).length > 0 &&

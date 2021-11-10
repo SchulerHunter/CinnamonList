@@ -5,7 +5,6 @@ import ListItem from './ListItem'
 
 export default class HierarchyList extends React.Component {
     render() {
-        console.log(this.props.hierarchy)
         return(
             <Card sx={{bgcolor: '#f5f5f5'}}>
             <CardContent>
