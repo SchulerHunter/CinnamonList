@@ -1,5 +1,9 @@
-export default function AddForm() {
-    return (
-    <div></div>
-    )
+import React from 'react'
+
+export default class AddForm extends React.Component {
+    render() {
+        return (
+            <div></div>
+        )
+    }
 }

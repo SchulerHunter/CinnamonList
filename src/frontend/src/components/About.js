@@ -1,11 +1,9 @@
 import React from 'react'
-import Navbar from './Navbar'
 import {Box, Grid, Card, CardContent, Stack} from '@mui/material'
 
-export default function About(){
-    return(
-        <div>
-            <Navbar />
+export default class About extends React.Component {
+    render() {
+        return (
             <Box sx={{ flexGrow: 1 }} p={2}>
                 <Grid container spacing={2}>
                     <Grid item md={2}></Grid>
@@ -13,7 +11,7 @@ export default function About(){
                         <Stack spacing={2}>
                             <Card sx={{boxShadow: 3}}>
                                 <CardContent>
-                                    <h1>About ERPI</h1>
+                                    <h1>About EPRI</h1>
                                     <p style={{lineHeight: 2}}>The Electric Power Research Institute (EPRI) conducts research, development, 
                                     and demonstration projects for the benefit of the public in the United States and internationally. 
                                     As an independent, nonprofit organization for public interest energy and environmental research, 
@@ -34,6 +32,6 @@ export default function About(){
                     <Grid item md={2}></Grid>
                 </Grid>
             </Box>
-        </div>
-    )
+        )
+    }
 }

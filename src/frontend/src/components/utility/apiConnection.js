@@ -19,7 +19,7 @@ export async function getHierarchy() {
 
 export async function getIDs() {
     try {
-        const {data:response} = await axios.post('http://127.0.0.1:5000/geIDs', axiosData, axiosConfig)
+        const {data:response} = await axios.post('http://127.0.0.1:5000/getIDs', axiosData, axiosConfig)
         return response
     }
 

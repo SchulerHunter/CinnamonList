@@ -1,11 +1,9 @@
 import React from 'react'
-import Navbar from './Navbar'
 import {Box, Grid, Card, CardContent, Stack} from '@mui/material'
 
-export default function Home(){
-    return(
-        <div>
-            <Navbar />
+export default class Home extends React.Component{
+    render() {
+        return (
             <Box sx={{ flexGrow: 1 }} p={2}>
                 <Grid container spacing={2}>
                     <Grid item md={2}></Grid>
@@ -22,6 +20,6 @@ export default function Home(){
                     <Grid item md={2}></Grid>
                 </Grid>
             </Box>
-        </div>
-    )
+        )
+    }
 }
