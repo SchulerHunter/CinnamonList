@@ -6,7 +6,7 @@ import AddForm from './components/AddForm'
 import About from './components/About'
 import Home from './components/Home'
 import Content from './components/Content'
-import {getHierarchy, getIDs, getTabs, getItem} from './components/utility/apiConnection'
+import {getHierarchy, getIDs, getTabs, getItem, editTerm} from './components/utility/apiConnection'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -64,6 +64,13 @@ export default class App extends React.Component {
     })
   }
 
+  // Callback to update data for an item
+  editCallback = (content) => {
+    editTerm(this.state.data, content).then(() => {
+      this.dataCallback(this.state.data)
+    })
+  }
+
   render() {
     return (
       <div>
@@ -82,6 +89,7 @@ export default class App extends React.Component {
             hierarchy={this.state.subHierarchy}
             IDs={this.state.IDs}
             dataCallback={this.dataCallback}
+            editCallback={this.editCallback}
           /> }
           { this.state.page === 2 && 
           <AddForm

@@ -67,7 +67,7 @@ export async function editTerm(key, content) {
     var config = axiosConfig
     config.headers["content-type"] = "application/json"
     try {
-        const {data:response} = await axios.post(`http://127.0.0.1:5000/edit/${key}`, content, config)
+        const {data:response} = await axios.post(`http://127.0.0.1:5000/edit/${key}`, {content: content}, config)
         return response
     }
 
@@ -76,11 +76,11 @@ export async function editTerm(key, content) {
     }
 }
 
-export async function addTerm(content) {
+export async function bulkEdit(content) {
     var config = axiosConfig
     config.headers["content-type"] = "application/json"
     try {
-        const {data:response} = await axios.post(`http://127.0.0.1:5000/add`, content, config)
+        const {data:response} = await axios.post(`http://127.0.0.1:5000/bulk`, {content: content}, config)
         return response
     }
 

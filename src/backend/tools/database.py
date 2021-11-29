@@ -73,3 +73,22 @@ class databaseConnection:
                 rankedTerms[count].append([id, term])
         
         return rankedTerms
+
+    def editTerm(self, id, content):
+        conn = self.connectDB()
+        cursor = conn.cursor()
+        cursor.execute(f"UPDATE data SET definition='{content['definition']}', synonyms='{content['synonyms']}', acronyms='{content['acronyms']}' WHERE id={id}")
+        conn.commit()
+        return
+    
+    def bulkEdit(self, content):
+        conn = self.connectDB()
+        cursor = conn.cursor()
+        for id in content.keys():
+            if id in self._ids:
+                self.editTerm(id, content[id])
+            else:
+                cursor.execute(f"INSERT INTO hierarchy VALUES ({content['parent_id']}, '{content['term']}')")
+                cursor.execute(f"INSERT INTO data VALUES ('{content['term']}', '{content['definition']}', '{content['synonyms']}', '{content['acronyms']}')")
+        conn.commit()
+        return

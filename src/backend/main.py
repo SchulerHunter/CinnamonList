@@ -39,19 +39,18 @@ def fetch_id(id):
 
 @app.route("/search", methods = ['GET', 'POST'])
 def fetchSearch():
-    print(request.json["searchKey"])
     return connection.searchKey(request.json["searchKey"].lower())
 
 # Route for editting a term
 @app.route("/edit/<int:id>", methods = ['GET', 'POST'])
-def editTerm(key):
-    print(request.data)
+def editTerm(id):
+    connection.editTerm(id, request.json["content"])
     return('', 204)
 
 # Route for adding a term
-@app.route("/add", methods = ['GET', 'POST'])
-def addTerm():
-    print(request.data)
+@app.route("/bulk", methods = ['GET', 'POST'])
+def bulkEdit():
+    connection.bulkEdit(request.json["content"])
     return('', 204)
 
 # Decodes stringified array back to array
