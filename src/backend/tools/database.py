@@ -85,10 +85,10 @@ class databaseConnection:
         conn = self.connectDB()
         cursor = conn.cursor()
         for id in content.keys():
-            if id in self._ids:
-                self.editTerm(id, content[id])
+            if int(id) in self._ids:
+                self.editTerm(int(id), content[id])
             else:
-                cursor.execute(f"INSERT INTO hierarchy VALUES ({content['parent_id']}, '{content['term']}')")
-                cursor.execute(f"INSERT INTO data VALUES ('{content['term']}', '{content['definition']}', '{content['synonyms']}', '{content['acronyms']}')")
+                cursor.execute(f"INSERT INTO hierarchy(parent_id, term) VALUES ({content[id]['parent_id']}, '{content[id]['term']}')")
+                cursor.execute(f"INSERT INTO data(term, definition, synonyms, acronyms) VALUES ('{content[id]['term']}', '{content[id]['definition']}', '{content[id]['synonyms']}', '{content[id]['acronyms']}')")
                 conn.commit()
         return
