@@ -66,10 +66,18 @@ export default class SearchBox extends React.Component {
 
     searchClick = (event) => {
         const target = event.currentTarget
-        this.setState({
-            anchorEl: target,
-            showResults: false
-        })
+        if (this.state.hasResults) {
+            this.setState({
+                anchorEl: target,
+                showResults: true
+            })
+        } else {
+            this.setState({
+                anchorEl: target,
+                showResults: false
+            })
+        }
+        
     }
 
     blurHandler = () => {
