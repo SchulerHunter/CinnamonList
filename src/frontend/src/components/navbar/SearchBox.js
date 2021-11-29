@@ -109,19 +109,19 @@ export default class SearchBox extends React.Component {
                     >
                     <Paper style={{maxHeight: '75vh', width: "25rem", overflowY: "auto", overflowX: "hidden"}}>
                         <MenuList id="composition-menu">
-                            {this.state.hasResults &&
-                                Object.keys(this.state.results).reverse().map((matches) => (
-                                    this.state.results[matches].map((result) => (
-                                        <MenuItem key={result[0]} value={result[0]} onClick={() => {this.resultClick(String(result[0]))}}>
-                                            <ListItemText>{result[1]}</ListItemText>
-                                        </MenuItem>
+                            {this.state.hasResults ? (
+                                    Object.keys(this.state.results).reverse().map((matches) => (
+                                        this.state.results[matches].map((result) => (
+                                            <MenuItem key={result[0]} value={result[0]} onMouseDown={() => {this.resultClick(String(result[0]))}}>
+                                                <ListItemText>{result[1]}</ListItemText>
+                                            </MenuItem>
+                                        ))
                                     ))
-                                ))
-                            }
-                            {!this.state.hasResults &&
-                                <MenuItem disabled>
-                                    <ListItemText>No results found</ListItemText>
-                                </MenuItem>
+                                ) : (
+                                    <MenuItem disabled>
+                                        <ListItemText>No results found</ListItemText>
+                                    </MenuItem>
+                                )
                             }
                         </MenuList>
                     </Paper>
