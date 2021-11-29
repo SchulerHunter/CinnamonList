@@ -62,8 +62,8 @@ export default class Content extends React.Component {
                 if (this.state.def !== this.props.content.def) {
                     const content = {
                         definition: this.state.def,
-                        synonyms: this.state.syn.replace(/\n+$/, "").replace(/[\r\n]+/gm, ";"),
-                        acronyms: this.state.acr.replace(/\n+$/, "").replace(/[\r\n]+/gm, ";")
+                        synonyms: this.state.syn.replace(/[\r\n]+/gm, ";"),
+                        acronyms: this.state.acr.replace(/[\r\n]+/gm, ";")
                     }
     
                     this.props.editCallback(content)
@@ -87,12 +87,12 @@ export default class Content extends React.Component {
             })
         } else {
             if (this.state.synonymEdit) {
-                const syn = this.state.syn.replace(/\n+$/, "").replace(/[\r\n]+/gm, ";")
+                const syn = this.state.syn.replace(/[\r\n]+/gm, ";")
                 if (syn !== this.props.content.syn.join(";")) {
                     const content = {
                         definition: this.state.def,
                         synonyms: syn,
-                        acronyms: this.state.acr.replace(/\n+$/, "").replace(/[\r\n]+/gm, ";")
+                        acronyms: this.state.acr.replace(/[\r\n]+/gm, ";")
                     }
     
                     this.props.editCallback(content)
@@ -116,11 +116,11 @@ export default class Content extends React.Component {
             })
         } else {
             if (this.state.acronymEdit) {
-                const acr = this.state.acr.replace(/\n+$/, "").replace(/[\r\n]+/gm, ";")
+                const acr = this.state.acr.replace(/[\r\n]+/gm, ";")
                 if (acr !== this.props.content.acr.join(";")) {
                     const content = {
                         definition: this.state.def,
-                        synonyms: this.state.syn.replace(/\n+$/, "").replace(/[\r\n]+/gm, ";"),
+                        synonyms: this.state.syn.replace(/[\r\n]+/gm, ";"),
                         acronyms: acr
                     }
     
