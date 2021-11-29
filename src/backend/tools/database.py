@@ -90,5 +90,5 @@ class databaseConnection:
             else:
                 cursor.execute(f"INSERT INTO hierarchy VALUES ({content['parent_id']}, '{content['term']}')")
                 cursor.execute(f"INSERT INTO data VALUES ('{content['term']}', '{content['definition']}', '{content['synonyms']}', '{content['acronyms']}')")
-        conn.commit()
+                conn.commit()
         return
