@@ -12,12 +12,13 @@ export default class SearchBox extends React.Component {
             searchValue: "",
             anchorEl: null,
             showResults: false,
+            hasResults: false,
             results: {}
         }
     }
 
     shouldComponentUpdate = (nextProps, nextState) => {
-        return nextState.searchValue !== this.state.searchValue || nextState.results !== this.state.results
+        return nextState.searchValue !== this.state.searchValue || nextState.results !== this.state.results || nextState.showResults !== this.state.showResults
     }
 
     componentDidUpdate = (prevProps, prevState) => {
@@ -32,16 +33,34 @@ export default class SearchBox extends React.Component {
         this.setState({
             searchValue: newString,
             showResults: false,
+            hasResults: false,
             results: {}
         })
     }
 
     doneTyping = () => {
         searchKey(this.state.searchValue).then((result) => {
-            this.setState({
-                showResults: true,
-                results: result
+            var hasResults = false
+            Object.values(result).forEach(matches => {
+                if (matches.length > 0) {
+                    hasResults = true
+                }
             })
+
+            if (hasResults) {
+                this.setState({
+                    showResults: true,
+                    hasResults: true,
+                    results: result
+                })
+            } else {
+                this.setState({
+                    showResults: true,
+                    hasResults: false,
+                    results: {}
+                })
+            }
+            
         })
     }
 
@@ -53,10 +72,17 @@ export default class SearchBox extends React.Component {
         })
     }
 
+    blurHandler = () => {
+        this.setState({
+            showResults: false
+        })
+    }
+
     resultClick = (id) => {
         this.setState({
             searchValue: "",
             showResults: false,
+            hasResults: false,
             results: {}
         })
         this.props.dataCallback(id)
@@ -72,28 +98,34 @@ export default class SearchBox extends React.Component {
                     variant="outlined"
                     onChange={this.changeHandler}
                     onClick={this.searchClick}
+                    onBlur={this.blurHandler}
                     value={this.state.searchValue}
                 />
-                {Object.keys(this.state.results).length > 0 &&
-                    <Popper
-                        open={this.state.showResults}
-                        anchorEl={this.state.anchorEl}
-                        placement="bottom-start"
-                        disablePortal
-                        >
-                        <Paper style={{maxHeight: '75vh', overflowY: "auto", overflowX: "hidden", paddingRight: "13px"}}>
-                            <MenuList id="composition-menu">
-                                {Object.keys(this.state.results).reverse().map((matches) => (
+                <Popper
+                    open={this.state.showResults}
+                    anchorEl={this.state.anchorEl}
+                    placement="bottom-start"
+                    disablePortal
+                    >
+                    <Paper style={{maxHeight: '75vh', width: "25rem", overflowY: "auto", overflowX: "hidden"}}>
+                        <MenuList id="composition-menu">
+                            {this.state.hasResults &&
+                                Object.keys(this.state.results).reverse().map((matches) => (
                                     this.state.results[matches].map((result) => (
                                         <MenuItem key={result[0]} value={result[0]} onClick={() => {this.resultClick(String(result[0]))}}>
                                             <ListItemText>{result[1]}</ListItemText>
                                         </MenuItem>
                                     ))
-                                ))}
-                            </MenuList>
-                        </Paper>
-                    </Popper>
-                }
+                                ))
+                            }
+                            {!this.state.hasResults &&
+                                <MenuItem disabled>
+                                    <ListItemText>No results found</ListItemText>
+                                </MenuItem>
+                            }
+                        </MenuList>
+                    </Paper>
+                </Popper>
             </div>
         )
     }

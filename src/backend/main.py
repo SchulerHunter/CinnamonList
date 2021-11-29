@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from flask import Flask
+from flask import Flask, request
 from flask_cors import CORS
 from tools import database as DB
 
@@ -30,25 +30,38 @@ def getTabs():
     return {"root": tabs}
 
 # Route for definition page
-@app.route("/<int:id>",methods = ['GET', 'POST'])
+@app.route("/<int:id>", methods = ['GET', 'POST'])
 def fetch_id(id):
     item = connection.getItem(id)
     item["syn"] = arrayDecode(item["syn"])
     item["acr"] = arrayDecode(item["acr"])
     return item
 
-@app.route("/search/<key>",methods = ['GET', 'POST'])
-def fetchSearch(key):
-    return connection.searchKey(key.lower())
+@app.route("/search", methods = ['GET', 'POST'])
+def fetchSearch():
+    print(request.json["searchKey"])
+    return connection.searchKey(request.json["searchKey"].lower())
+
+# Route for editting a term
+@app.route("/edit/<int:id>", methods = ['GET', 'POST'])
+def editTerm(key):
+    print(request.data)
+    return('', 204)
+
+# Route for adding a term
+@app.route("/add", methods = ['GET', 'POST'])
+def addTerm():
+    print(request.data)
+    return('', 204)
 
 # Decodes stringified array back to array
 def arrayDecode(string):
-    arr = string.split(",")
+    arr = string.split(";")
     return arr
 
 # Encodes array to string
 def arrayEncode(arr):
-    result = ",".join(arr)
+    result = ";".join(arr)
     return result
 
 if __name__ == "__main__":
