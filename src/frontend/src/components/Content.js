@@ -18,8 +18,11 @@ export default class Content extends React.Component {
         }
     }
 
-    componentDidUpdate = (prevProps, prevState) => {
-        if (prevProps.content.term !== this.props.content.term) {
+    componentDidUpdate = (prevProps) => {
+        if (prevProps.content.term !== this.props.content.term || 
+            prevProps.content.def !== this.props.content.def ||
+            prevProps.content.syn !== this.props.content.syn ||
+            prevProps.content.acr !== this.props.content.acr) {
             this.setState({
                 def: this.props.content.def,
                 syn: this.props.content.syn.join("\n"),
@@ -59,17 +62,19 @@ export default class Content extends React.Component {
             })
         } else {
             if (this.state.definitionEdit) {
-                if (this.state.def !== this.props.content.def) {
+                const def = this.state.def.trim().replace(/  +/gm, " ").replace(/( [\r\n]|[\r\n] )/gm, "\n").replace(/[\r\n][\r\n]+/gm, "\n\n")
+                if (def !== this.props.content.def) {
                     const content = {
-                        definition: this.state.def,
+                        definition: def,
                         synonyms: this.state.syn.replace(/[\r\n]+/gm, ";"),
                         acronyms: this.state.acr.replace(/[\r\n]+/gm, ";")
                     }
     
-                    this.props.editCallback(content)
+                    this.props.editTermCallback(content)
                 }
 
                 this.setState({
+                    def: this.props.content.def,
                     definitionEdit: false
                 })
             } else {
@@ -87,18 +92,19 @@ export default class Content extends React.Component {
             })
         } else {
             if (this.state.synonymEdit) {
-                const syn = this.state.syn.replace(/[\r\n]+/gm, ";")
+                const syn = this.state.syn.trim().replace(/  +/gm, " ").replace(/( [\r\n]|[\r\n] )/gm, "\n").replace(/[\r\n]+/gm, ";")
                 if (syn !== this.props.content.syn.join(";")) {
                     const content = {
                         definition: this.state.def,
                         synonyms: syn,
-                        acronyms: this.state.acr.replace(/[\r\n]+/gm, ";")
+                        acronyms: this.state.acr.replace(/[\r\n]/gm, ";")
                     }
     
-                    this.props.editCallback(content)
+                    this.props.editTermCallback(content)
                 }
 
                 this.setState({
+                    syn: this.props.content.syn.join("\n"),
                     synonymEdit: false
                 })
             } else {
@@ -116,18 +122,19 @@ export default class Content extends React.Component {
             })
         } else {
             if (this.state.acronymEdit) {
-                const acr = this.state.acr.replace(/[\r\n]+/gm, ";")
+                const acr = this.state.acr.trim().replace(/  +/gm, " ").replace(/( [\r\n]|[\r\n] )/gm, "\n").replace(/[\r\n]+/gm, ";")
                 if (acr !== this.props.content.acr.join(";")) {
                     const content = {
                         definition: this.state.def,
-                        synonyms: this.state.syn.replace(/[\r\n]+/gm, ";"),
+                        synonyms: this.state.syn.replace(/[\r\n]/gm, ";"),
                         acronyms: acr
                     }
     
-                    this.props.editCallback(content)
+                    this.props.editTermCallback(content)
                 }
 
                 this.setState({
+                    acr: this.props.content.acr.join("\n"),
                     acronymEdit: false
                 })
             } else {
@@ -178,7 +185,7 @@ export default class Content extends React.Component {
                                                 <Button variant="contained" onClick={this.definitionClick}>{this.state.definitionEdit ? "Finish" : "Edit"}</Button>
                                             </Grid>
                                         </Box>
-                                        {this.state.definitionEdit ? (
+                                        { this.state.definitionEdit ? (
                                                 <TextField
                                                     id="outlined-multiline-static"
                                                     label="Definition"
@@ -189,7 +196,7 @@ export default class Content extends React.Component {
                                                     value={this.state.def}
                                                 />
                                             ) : (
-                                                <p>{this.props.content.def}</p>
+                                                <Typography variant="p" whiteSpace="pre">{this.props.content.def}</Typography>
                                             )
                                             
                                         }
@@ -211,7 +218,7 @@ export default class Content extends React.Component {
                                             <Button variant="contained" onClick={this.synonymClick}>{this.state.synonymEdit ? "Finish" : "Edit"}</Button>
                                             </Grid>
                                         </Box>
-                                        {this.state.synonymEdit ? (
+                                        { this.state.synonymEdit ? (
                                                 <TextField
                                                     id="outlined-multiline-static"
                                                     label="Add each synonym on a new line"
@@ -245,7 +252,7 @@ export default class Content extends React.Component {
                                                 <Button variant="contained" onClick={this.acronymClick}>{this.state.acronymEdit ? "Finish" : "Edit"}</Button>
                                             </Grid>
                                         </Box>
-                                        {this.state.acronymEdit ? (
+                                        { this.state.acronymEdit ? (
                                                 <TextField
                                                 id="outlined-multiline-static"
                                                 label="Add each acronym on a new line"
