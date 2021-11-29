@@ -58,10 +58,5 @@ def arrayDecode(string):
     arr = string.split(";")
     return arr
 
-# Encodes array to string
-def arrayEncode(arr):
-    result = ";".join(arr)
-    return result
-
 if __name__ == "__main__":
     app.run()

@@ -41,7 +41,7 @@ export default class Navbar extends React.Component {
 
                             {/* Add Terms button setting */}
                             <Grid mr={'1rem'}>
-                                <Button onClick={() => this.props.pageCallback(2)}><b>Add Terms</b></Button>
+                                <Button onClick={() => this.props.pageCallback(2)}><b>Bulk Edit</b></Button>
                             </Grid>
 
                             {/* About button setting */}

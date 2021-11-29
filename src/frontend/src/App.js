@@ -2,11 +2,11 @@ import React from 'react'
 
 import Navbar from './components/navbar/Navbar'
 import Footer from './components/Footer'
-import AddForm from './components/AddForm'
+import EditForm from './components/EditForm'
 import About from './components/About'
 import Home from './components/Home'
 import Content from './components/Content'
-import {getHierarchy, getIDs, getTabs, getItem, editTerm} from './components/utility/apiConnection'
+import {getHierarchy, getIDs, getTabs, getItem, editTerm, bulkEdit} from './components/utility/apiConnection'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -24,7 +24,12 @@ export default class App extends React.Component {
   }
 
   // Fetchs all one time calls when component mounts
-  async componentDidMount() {
+  componentDidMount = async () => {
+    this.refreshData()
+  }
+
+  // Refreshes all database datasets
+  refreshData = async () => {
     getTabs().then((result) => {
       this.setState({subTabs:result})
     })
@@ -45,7 +50,7 @@ export default class App extends React.Component {
   }
 
   // Callback to change the data when new data is selected
-  dataCallback = (dataID) => {
+  dataCallback =  async (dataID) => {
     var currID = dataID
     var idPath = [currID]
     while (this.state.IDs[currID].parent !== null) {
@@ -65,9 +70,20 @@ export default class App extends React.Component {
   }
 
   // Callback to update data for an item
-  editCallback = (content) => {
+  editTermCallback = async (content) => {
     editTerm(this.state.data, content).then(() => {
       this.dataCallback(this.state.data)
+    })
+  }
+
+  // Callback for bulk edits from form
+  bulkEditCallback = async (content) => {
+    bulkEdit(content).then(() => {
+      this.refreshData().then(() => {
+        if (this.state.page === 1 && this.state.data !== 0) {
+          this.dataCallback(this.state.data)
+        }
+      })
     })
   }
 
@@ -89,10 +105,11 @@ export default class App extends React.Component {
             hierarchy={this.state.subHierarchy}
             IDs={this.state.IDs}
             dataCallback={this.dataCallback}
-            editCallback={this.editCallback}
+            editTermCallback={this.editTermCallback}
           /> }
           { this.state.page === 2 && 
-          <AddForm
+          <EditForm
+            bulkEditCallback={this.bulkEditCallback}
           /> }
           { this.state.page === 3 && <About /> }
         </div>

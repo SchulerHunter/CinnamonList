@@ -18,7 +18,7 @@ export default class HierarchyList extends React.Component {
                     </ListSubheader>
                     }>
 
-                    {Object.keys(this.props.hierarchy).length > 0 &&
+                    { Object.keys(this.props.hierarchy).length > 0 &&
                         <div>
                             { Object.keys(this.props.hierarchy).map(id => (
                                 <ListItem

@@ -28,6 +28,10 @@ class databaseConnection:
 
     # Returns the hierarchy of terms associated in the hierarchy table
     def fetchHierarchy(self):
+        # Reset the current class
+        self._ids = {}
+        self._hierarchy = {}
+
         cursor = self.connectDB().cursor()
         cursor.execute("SELECT * FROM hierarchy")
         rows = cursor.fetchall()
@@ -91,4 +95,6 @@ class databaseConnection:
                 cursor.execute(f"INSERT INTO hierarchy(parent_id, term) VALUES ({content[id]['parent_id']}, '{content[id]['term']}')")
                 cursor.execute(f"INSERT INTO data(term, definition, synonyms, acronyms) VALUES ('{content[id]['term']}', '{content[id]['definition']}', '{content[id]['synonyms']}', '{content[id]['acronyms']}')")
                 conn.commit()
+        # Rebuild the ids and hierarchy
+        self.fetchHierarchy()
         return
