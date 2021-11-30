@@ -80,9 +80,10 @@ export default class App extends React.Component {
   bulkEditCallback = async (content) => {
     bulkEdit(content).then(() => {
       this.refreshData().then(() => {
-        if (this.state.page === 1 && this.state.data !== 0) {
-          this.dataCallback(this.state.data)
-        }
+        this.setState({
+          page: 1,
+          data: 0
+        })
       })
     })
   }
