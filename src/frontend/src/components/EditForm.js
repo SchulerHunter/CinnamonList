@@ -2,8 +2,8 @@ import React from 'react'
 import {Button, Card, CardContent, Stack, TextField} from '@mui/material'
 
 export default class EditForm extends React.Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
             def: "",
             syn: "",
@@ -45,14 +45,16 @@ export default class EditForm extends React.Component {
 
     bulkClick = () => {
         const content = {
-            definition: this.state.def,
-            synonyms: this.state.syn,
-            acronyms: this.state.acr,
-            Term: this.state.ter,
-            pid: this.state.pid
+            "-1": {
+                definition: this.state.def,
+                synonyms: this.state.syn,
+                acronyms: this.state.acr,
+                term: this.state.ter,
+                parent_id: this.state.pid
+            }
         }
 
-        this.props.bulkCallback(content)
+        this.props.bulkEditCallback(content)
     }
 
     render() {
