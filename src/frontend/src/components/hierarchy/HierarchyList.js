@@ -19,7 +19,7 @@ export default class HierarchyList extends React.Component {
                     }>
 
                     { Object.keys(this.props.hierarchy).length > 0 &&
-                        <div>
+                        <div style={{overflow: 'auto', maxHeight: '30rem'}}>
                             { Object.keys(this.props.hierarchy).map(id => (
                                 <ListItem
                                     key={id}
@@ -33,7 +33,6 @@ export default class HierarchyList extends React.Component {
                             ))}
                         </div>
                     }
-
                     <Divider />
                 </List>
             </CardContent>
