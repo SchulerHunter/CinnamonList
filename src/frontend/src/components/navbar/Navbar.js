@@ -62,15 +62,18 @@ export default class Navbar extends React.Component {
                     flexDirection={'row'} 
                     alignItems="center" 
                     justifyContent="space-between">
-                        <Grid display={'flex'} 
+                        <Grid sx={{overflow: 'auto'}}
+                            height={'4rem'}
+                            display={'flex'} 
                             flexDirection={'row'} 
                             alignItems="center" 
                             justifyContent="space-start"
-                            ml={'3rem'}>
+                            ml={'3rem'}
+                            mr={'3rem'}>
                                 { this.props.subTabs.root.map((item) => {
                                     return(
-                                        <Grid mr={'1rem'} key={item[0]}>
-                                            <Button onClick={() => this.props.dataCallback(item[0])}><b>{item[1]}</b></Button>
+                                        <Grid mr={'2rem'} key={item[0]}>
+                                            <Button sx={{width: 'max-content'}} onClick={() => this.props.dataCallback(item[0])}><b>{item[1]}</b></Button>
                                         </Grid>
                                     )
                                 })}
