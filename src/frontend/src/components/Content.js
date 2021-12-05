@@ -178,8 +178,8 @@ export default class Content extends React.Component {
                                             alignItems="center"
                                             justifyContent="space-between"
                                             >
-                                            <Grid mr="1rem" ml="1rem">
-                                                <h2>&ensp;Definition</h2>
+                                            <Grid mr="1rem" ml="2rem">
+                                                <h2>Definition</h2>
                                             </Grid>
                                             <Grid mr="1rem">
                                                 <Button variant="contained" onClick={this.definitionClick}>{this.state.definitionEdit ? "Finish" : "Edit"}</Button>
@@ -196,7 +196,7 @@ export default class Content extends React.Component {
                                                     value={this.state.def}
                                                 />
                                             ) : (
-                                                <Typography variant="p" whiteSpace="pre">{this.props.content.def}</Typography>
+                                                <Typography ml='2.5rem' variant="p" whiteSpace="pre">{this.props.content.def}</Typography>
                                             )
                                             
                                         }
@@ -211,8 +211,8 @@ export default class Content extends React.Component {
                                             alignItems="center"
                                             justifyContent="space-between"
                                             >
-                                            <Grid mr="1rem" ml="1rem">
-                                                <h2>&ensp;Synonyms</h2>
+                                            <Grid mr="1rem" ml="2rem">
+                                                <h2>Synonyms</h2>
                                             </Grid>
                                             <Grid mr="1rem">
                                             <Button variant="contained" onClick={this.synonymClick}>{this.state.synonymEdit ? "Finish" : "Edit"}</Button>
@@ -245,8 +245,8 @@ export default class Content extends React.Component {
                                             alignItems="center"
                                             justifyContent="space-between"
                                             >
-                                            <Grid mr="1rem" ml="1rem">
-                                                <h2>&ensp;Acronyms</h2>
+                                            <Grid mr="1rem" ml="2rem">
+                                                <h2>Acronyms</h2>
                                             </Grid>
                                             <Grid mr="1rem">
                                                 <Button variant="contained" onClick={this.acronymClick}>{this.state.acronymEdit ? "Finish" : "Edit"}</Button>
