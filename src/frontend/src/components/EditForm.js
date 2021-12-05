@@ -1,6 +1,13 @@
 import React from 'react'
-import {Button, Card, CardContent, Stack, TextField, Grid, IconButton} from '@mui/material'
+import {Button, Card, CardContent, Stack, TextField, Grid, IconButton, Box} from '@mui/material'
+
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import HierarchyList from './hierarchy/HierarchyList'
+
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 export default class EditForm extends React.Component {
     constructor(props) {
@@ -58,106 +65,30 @@ export default class EditForm extends React.Component {
         this.props.bulkEditCallback(content)
     }
 
+    clickHandler = () => {
+        this.props.dataCallback(this.props.id)
+    }
+
     render() {
         return (
-            // <div>
-            //     <Stack paddingX={10} paddingY={5} direction="row" sx={{justifyContent: 'space-between'}}>
-
-            //         {/* Adding Term */}
-            //         <Card sx={{boxShadow: 3, width: '45%'}}>
-            //             <h3 style={{textAlign: 'center', backgroundColor: '#c4c4c4', margin: 0}}>Term</h3>
-            //             <div style={{ padding: '.5rem'}}>
-            //                 <TextField
-            //                     id="outlined-multiline-static"
-            //                     label="Term"
-            //                     multiline
-            //                     fullWidth
-            //                     rows={4}
-            //                     onChange={this.onTermChange}
-            //                     />
-            //             </div>
-
-            //             {/* Adding Definition */}
-            //             <h3 style={{textAlign: 'center', backgroundColor: '#c4c4c4', margin: 0}}>Definition</h3>
-            //             <div style={{ padding: '.5rem'}}>
-            //                 <TextField
-            //                     id="outlined-multiline-static"
-            //                     label="Definition"
-            //                     multiline
-            //                     fullWidth
-            //                     rows={4}
-            //                     onChange={this.onDefinitionChange}
-            //                     />
-            //             </div>
-
-            //             {/* Adding Synonyms */}
-            //             <h3 style={{textAlign: 'center', backgroundColor: '#c4c4c4', margin: 0}}>Synonyms</h3>
-            //             <div style={{ padding: '.5rem'}}>
-            //                 <TextField
-            //                     id="outlined-multiline-static"
-            //                     label="Synonyms"
-            //                     multiline
-            //                     fullWidth
-            //                     rows={4}
-            //                     onChange={this.onSynonymChange}
-            //                     />
-            //             </div>
-
-            //             {/* Adding Acronyms */}
-            //             <h3 style={{textAlign: 'center', backgroundColor: '#c4c4c4', margin: 0}}>Acronyms</h3>
-            //             <div style={{ padding: '.5rem'}}>
-            //                 <TextField
-            //                     id="outlined-multiline-static"
-            //                     label="Acronyms"
-            //                     multiline
-            //                     fullWidth
-            //                     rows={4}
-            //                     onChange={this.onAcronymChange}
-            //                     />
-            //             </div>
-            //         </Card>
-
-            //         {/* Testing purpose: will change to select box later */}
-            //         <Card sx={{boxShadow: 3, width: '45%'}}>
-            //             <h3 style={{textAlign: 'center', backgroundColor: '#c4c4c4', margin: 0}}>Select Parent</h3>
-            //             <CardContent sx={{paddingX: '2rem'}}>
-            //                 <TextField
-            //                     id="outlined-multiline-static"
-            //                     label="Select parent"
-            //                     multiline
-            //                     fullWidth
-            //                     rows={4}
-            //                     onChange={this.onPidChange}
-            //                     />
-            //             </CardContent>
-            //         </Card>
-            //     </Stack>
-
-            //     {/* Submit button */}
-            //     <Stack paddingBottom='3rem' direction="row" sx={{justifyContent: 'center'}}>
-            //         <Button variant="contained" onClick={() => this.bulkClick()}><b>{"Submit"}</b></Button>
-            //     </Stack>
-            // </div>
-
             <div>
-
-                {/* Top Grid */}
-                <Grid container marginY={'3rem'} paddingLeft={'5rem'} paddingRight={'5rem'}
+                {/* Top Direction */}
+                <Grid container marginY={'3rem'} paddingX={'8rem'}
                     display={'flex'} 
                     flexDirection={'row'} 
                     alignItems="center" 
                     justifyContent="space-between">
 
                     <h1>Dictionary Bulk Edit</h1>
-
                     <Button variant="contained" onClick={() => this.bulkClick()}><b>{"Done"}</b></Button>
                 </Grid>
 
-                {/* Card content */}
+
+                {/* Card Area */}
                 <Stack paddingX={10} direction="column" sx={{justifyContent: 'space-between'}}>
 
-                    {/* Top Card */}
-                    <Grid container sx={{backgroundColor: '#557A95', boxShadow: 3, width: '70%%'}} mb='3rem'
+                    {/* Card Set*/}
+                    <Grid container sx={{backgroundColor: '#CACED5', boxShadow: 3, width: '70%%'}} mb='3rem'
                         borderRadius='1%'
                         paddingX='1.5rem'
                         paddingY='1.5rem'
@@ -166,22 +97,29 @@ export default class EditForm extends React.Component {
                         justifyContent="space-between">
 
                             {/* Selecting Term */}
-                            <Card sx={{boxShadow: 3, width: '19%'}}>
+                            <Card sx={{boxShadow: 3, width: '23%'}}>
                                 <h3 style={{textAlign: 'center', backgroundColor: '#9CB5EE', margin: 0}}>Term</h3>
                                 <CardContent>
-                                <TextField
-                                    id="outlined-multiline-static"
-                                    label="Select Term"
-                                    multiline
-                                    fullWidth
-                                    rows={4}
-                                    onChange={this.onTermChange}
-                                    />
+                                    <FormControl fullWidth>
+                                        <InputLabel>Select a Term</InputLabel>
+                                        <Select 
+                                            value={this.term} 
+                                            onChange={this.onTermChange}
+                                            >
+
+                                            <MenuItem value='none'><b>ADD NEW</b></MenuItem>
+                                            { this.props.subTabs.root.map((item) => {
+                                                return(
+                                                    <MenuItem ><p>{this.props.content.term}</p></MenuItem>
+                                                )
+                                            })}
+                                        </Select>
+                                </FormControl>
                                 </CardContent>
                             </Card>
 
                             {/* Selecting Definition */}
-                            <Card sx={{boxShadow: 3, width: '19%'}}>
+                            <Card sx={{boxShadow: 3, width: '23%'}}>
                                 <h3 style={{textAlign: 'center', backgroundColor: '#9CB5EE', margin: 0}}>Definition</h3>
                                 <CardContent>
                                 <TextField
@@ -196,7 +134,7 @@ export default class EditForm extends React.Component {
                             </Card>
 
                             {/* Selecting Synonyms */}
-                            <Card sx={{boxShadow: 3, width: '19%'}}>
+                            <Card sx={{boxShadow: 3, width: '23%'}}>
                                 <h3 style={{textAlign: 'center', backgroundColor: '#9CB5EE', margin: 0}}>Synonyms</h3>
                                 <CardContent>
                                 <TextField
@@ -211,7 +149,7 @@ export default class EditForm extends React.Component {
                             </Card>
 
                             {/* Selecting Acronyms */}
-                            <Card sx={{boxShadow: 3, width: '19%'}}>
+                            <Card sx={{boxShadow: 3, width: '23%'}}>
                                 <h3 style={{textAlign: 'center', backgroundColor: '#9CB5EE', margin: 0}}>Acronyms</h3>
                                 <CardContent>
                                 <TextField
@@ -224,25 +162,10 @@ export default class EditForm extends React.Component {
                                     />
                                 </CardContent>
                             </Card>
-
-                            {/* Selecting Parent */}
-                            <Card sx={{boxShadow: 3, width: '19%'}}>
-                                <h3 style={{textAlign: 'center', backgroundColor: '#9CB5EE', margin: 0}}>Parent</h3>
-                                <CardContent>
-                                <TextField
-                                    id="outlined-multiline-static"
-                                    label="Select Parent"
-                                    multiline
-                                    fullWidth
-                                    rows={4}
-                                    onChange={this.onPidChange}
-                                    />
-                                </CardContent>
-                            </Card>
                     </Grid>
 
                     {/* Add new card button */}
-                    <Grid mx='15rem'
+                    <Grid marginX='15rem'
                         display={'flex'}
                         flexDirection={'row'} 
                         alignItems="center" 
@@ -251,8 +174,31 @@ export default class EditForm extends React.Component {
                         <IconButton color='primary' aria-label="add new card">
                             <AddCircleIcon fontSize="large"/>
                         </IconButton>
-                        <p> - On click adds a new card</p>
+                        <b> — On click adds a new card</b>
                     </Grid>
+
+                    {/* Pop up Parent Selecting */}
+                    <Card sx={{boxShadow: 3, width: '23%'}}>
+                        <h3 style={{textAlign: 'center', backgroundColor: '#9CB5EE', margin: 0}}>Parent</h3>
+                        <CardContent>
+                            <FormControl fullWidth>
+                                <InputLabel>Select a Parent</InputLabel>
+                                <Select 
+                                    value={this.term} 
+                                    onChange={this.onPidChange}
+                                    >
+
+                                    <MenuItem value='none'><b>ADD NEW</b></MenuItem>
+                                    { this.props.subTabs.root.map((item) => {
+                                        return(
+                                            <MenuItem ><p>{item[1]}</p></MenuItem>
+                                        )
+                                    })}
+                                </Select>
+                            </FormControl>
+                        </CardContent>
+                    </Card>
+
                 </Stack>
             </div>
         )
