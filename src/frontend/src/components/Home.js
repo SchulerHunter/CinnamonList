@@ -12,7 +12,7 @@ export default class Home extends React.Component{
                             <Card sx={{boxShadow: 3}}>
                                 <CardContent>
                                     <h1>How To Use The Dictionary</h1>
-                                    <p style={{lineHeight: 2}}>Click header tab, click sub levels. Or search</p>
+                                    <p style={{lineHeight: 2}}>Select a term from the top bar and sub-terms from the side panel that will appear, or search for any key terms.</p>
                                 </CardContent>
                             </Card>
                         </Stack>

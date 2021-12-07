@@ -2,7 +2,7 @@ import React from 'react'
 
 import Navbar from './components/navbar/Navbar'
 import Footer from './components/Footer'
-import EditForm from './components/EditForm'
+import EditForm from './components/editForm/EditForm'
 import About from './components/About'
 import Home from './components/Home'
 import Content from './components/Content'
@@ -51,8 +51,8 @@ export default class App extends React.Component {
 
   // Callback to change the data when new data is selected
   dataCallback =  async (dataID) => {
-    var currID = dataID
-    var idPath = [currID]
+    let currID = dataID
+    let idPath = [currID]
     while (this.state.IDs[currID].parent !== null) {
       currID = this.state.IDs[currID].parent
       idPath.push(String(currID))
@@ -90,7 +90,7 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <>
         <div className="mainContent">
         <Navbar 
           page={this.state.page}
@@ -111,13 +111,15 @@ export default class App extends React.Component {
           { this.state.page === 2 && 
           <EditForm
             bulkEditCallback={this.bulkEditCallback}
+            hierarchy={this.state.hierarchy}
+            IDs={this.state.IDs}
           /> }
           { this.state.page === 3 && <About /> }
         </div>
         <footer className="footer">
           <Footer />
         </footer>
-      </div>
+      </>
     )
   }
 }

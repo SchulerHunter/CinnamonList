@@ -8,7 +8,7 @@ export default class Navbar extends React.Component {
     render() {
         return (
             // Navigation bar setting
-            <div>
+            <>
                 <Box container sx={{ position: 'sticky', zIndex: 100, bgcolor: '#f5f5f5', boxShadow: 3, top: 0}} pt={'.5rem'} pb={'.5rem'}
                     display={'flex'} 
                     flexDirection={'row'} 
@@ -80,7 +80,7 @@ export default class Navbar extends React.Component {
                         </Grid>
                     </Box>
                 }
-            </div>
+            </>
         )
     }
 }

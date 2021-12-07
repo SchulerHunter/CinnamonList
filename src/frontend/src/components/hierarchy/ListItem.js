@@ -9,14 +9,14 @@ export default class ListItem extends React.Component{
 
     render() {
         return(
-        <div>
+        <>
             <Divider />
-            <ListItemButton sx={{ pl: this.props.pl }} onClick={this.clickHandler}>
+            <ListItemButton key={this.props.id} sx={{ pl: this.props.pl }} onClick={this.clickHandler}>
                 <ListItemText primary={this.props.IDs[this.props.id].term} />
                 { Object.keys(this.props.hierarchy).length > 0 && 
-                    <div>
+                    <>
                         { this.props.idPath.includes(this.props.id) ? <ExpandLess /> : <ExpandMore /> }
-                    </div>
+                    </>
                 }
             </ListItemButton>
 
@@ -25,7 +25,6 @@ export default class ListItem extends React.Component{
                     <List component="div" disablePadding>
                         { Object.keys(this.props.hierarchy).map(id => (
                             <ListItem 
-                                key={id}
                                 id={id}
                                 idPath={this.props.idPath}
                                 pl={this.props.pl+2}
@@ -37,7 +36,7 @@ export default class ListItem extends React.Component{
                     </List>
                 </Collapse>
             }
-        </div>
+        </>
         )
     }
 }

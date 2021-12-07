@@ -147,7 +147,7 @@ export default class Content extends React.Component {
 
     render() {
         return (
-            <div>
+            <>
                 <Box sx={{ flexGrow: 1 }} pt={5} pb={5} pl={2}>
                     <Grid container spacing={5}>
 
@@ -284,7 +284,7 @@ export default class Content extends React.Component {
                         <Typography variant="h6" component="h2">Please only edit one item at a time</Typography>
                     </Box>
                 </Modal>
-            </div>
+            </>
         )
     }
 }

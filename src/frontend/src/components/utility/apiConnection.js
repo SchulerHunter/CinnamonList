@@ -51,7 +51,7 @@ export async function getItem(key) {
 }
 
 export async function searchKey(key) {
-    var config = axiosConfig
+    let config = axiosConfig
     config.headers["content-type"] = "application/json"
     try {
         const {data:response} = await axios.post(`http://127.0.0.1:5000/search`, {searchKey:key}, config)
@@ -64,7 +64,7 @@ export async function searchKey(key) {
 }
 
 export async function editTerm(key, content) {
-    var config = axiosConfig
+    let config = axiosConfig
     config.headers["content-type"] = "application/json"
     try {
         const {data:response} = await axios.post(`http://127.0.0.1:5000/edit/${key}`, {content: content}, config)
@@ -77,7 +77,7 @@ export async function editTerm(key, content) {
 }
 
 export async function bulkEdit(content) {
-    var config = axiosConfig
+    let config = axiosConfig
     config.headers["content-type"] = "application/json"
     try {
         const {data:response} = await axios.post(`http://127.0.0.1:5000/bulk`, {content: content}, config)

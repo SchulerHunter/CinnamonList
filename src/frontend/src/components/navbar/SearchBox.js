@@ -40,7 +40,7 @@ export default class SearchBox extends React.Component {
 
     doneTyping = () => {
         searchKey(this.state.searchValue).then((result) => {
-            var hasResults = false
+            let hasResults = false
             Object.values(result).forEach(matches => {
                 if (matches.length > 0) {
                     hasResults = true
@@ -98,7 +98,7 @@ export default class SearchBox extends React.Component {
 
     render() {
         return (
-            <div>
+            <>
                 <TextField
                     style={{ width: '25rem'}}
                     id="outlined-basic"
@@ -134,7 +134,7 @@ export default class SearchBox extends React.Component {
                         </MenuList>
                     </Paper>
                 </Popper>
-            </div>
+            </>
         )
     }
 }
