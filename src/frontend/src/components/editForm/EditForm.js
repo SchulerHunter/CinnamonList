@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, Divider, Grid, IconButton, MenuItem, Stack, Tooltip} from '@mui/material'
+import {Button, Grid, IconButton, MenuItem, Stack, Tooltip} from '@mui/material'
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 import FormItem from './FormItem';
@@ -32,11 +32,29 @@ export default class EditForm extends React.Component {
         }
     }
 
-    finishClick = () => {
-        const content = {
-            "-1": {
+    finishEditing = () => {
+        let content = {}
+        this.state.formItems.forEach((item, index) => {
+            if (item.id === 0) {
+                content[this.indexToId[index]] = {
+                    id: this.indexToId[index],
+                    parent_id: item.pid,
+                    term: item.term,
+                    definition: item.def.trim().replace(/  +/gm, " ").replace(/( [\r\n]|[\r\n] )/gm, "\n").replace(/[\r\n][\r\n]+/gm, "\n\n"),
+                    synonyms: item.syn.trim().replace(/  +/gm, " ").replace(/( [\r\n]|[\r\n] )/gm, "\n").replace(/[\r\n]+/gm, ";"),
+                    acronyms: item.acr.trim().replace(/  +/gm, " ").replace(/( [\r\n]|[\r\n] )/gm, "\n").replace(/[\r\n]+/gm, ";")
+                }
+            } else {
+                content[item.id] = {
+                    id: item.id,
+                    parent_id: item.pid,
+                    term: item.term,
+                    definition: item.def.trim().replace(/  +/gm, " ").replace(/( [\r\n]|[\r\n] )/gm, "\n").replace(/[\r\n][\r\n]+/gm, "\n\n"),
+                    synonyms: item.syn.trim().replace(/  +/gm, " ").replace(/( [\r\n]|[\r\n] )/gm, "\n").replace(/[\r\n]+/gm, ";"),
+                    acronyms: item.acr.trim().replace(/  +/gm, " ").replace(/( [\r\n]|[\r\n] )/gm, "\n").replace(/[\r\n]+/gm, ";")
+                }
             }
-        }
+        })
 
         this.props.bulkEditCallback(content)
     }
@@ -76,13 +94,16 @@ export default class EditForm extends React.Component {
             let id = 0
             let itemHierarchy = {}
             if (index in this.indexToId) {
+                id = this.indexToId[index]
+
                 // Run this code block if the item has a temporary ID
                 if (formItems[index].pid !== content.pid) {
                     // Run this code block if the parent element has changed
+
+                    // This whole code block removes the element from its orginal place in the hierarchy
                     if (formItems[index].pid !== 0) {
                         // If the item is not a root level item, find its sub hierarchy, copy it to memory and delete the old location
-                        id = this.indexToId[index]
-                        let currID = content.pid
+                        let currID = formItems[index].pid
                         let idPath = [currID]
                         while (ids[currID].parent !== null) {
                             currID = ids[currID].parent
@@ -97,34 +118,39 @@ export default class EditForm extends React.Component {
                         itemHierarchy = hierarchy[id]
                         delete hierarchy[id]
                     }
+
+                    // The item is then to be reinserted into the hierarhcy
+                    if (content.pid === 0) {
+                        // Insert the item as a new top level element
+                        ids[id] = {parent: null, term: content.term}
+                        hierarchy[id] = itemHierarchy
+                    } else {
+                        // Insert the item as a new element under whatever the parent is set to
+                        ids[id] = {parent: content.pid, term: content.term}
+        
+                        hierarchy = this.insertIntoHierarchy(hierarchy, id, content.pid, itemHierarchy)
+                    }
                 }
             } else {
                 // If the item has not been assigned an ID yet, give it one
                 id = this.lowestID--
                 this.indexToId[index] = id
-            }
 
-            if (content.pid !== -99999) {
-                // Runs if the parent id is not set to the default value
+                // If the item is just getting an ID, it needs to be inserted into the hierarchy
                 if (content.pid === 0) {
                     // Insert the item as a new top level element
                     ids[id] = {parent: null, term: content.term}
                     hierarchy[id] = itemHierarchy
                 } else {
                     // Insert the item as a new element under whatever the parent is set to
+                    console.log(content.term)
                     ids[id] = {parent: content.pid, term: content.term}
-
-                    let currID = content.pid
-                    let idPath = [currID]
-                    while (ids[currID].parent !== null) {
-                        currID = ids[currID].parent
-                        idPath.push(currID)
-                    }
-                    idPath.reverse()
-
-                    hierarchy[idPath[0]] = this.recursiveDictAdd(hierarchy[idPath[0]], idPath.slice(1), id, itemHierarchy)
+                    hierarchy = this.insertIntoHierarchy(hierarchy, id, content.pid, itemHierarchy)
                 }
             }
+
+            // Update the term in the ids list
+            ids[id] = {parent: ids[id].parent, term: content.term}
         }
 
         // Rebuilds the parentTerms and selectTerms for all items if the id or parent item of the term has changed
@@ -174,7 +200,6 @@ export default class EditForm extends React.Component {
     getItems = () => {
         let parentTerms = []
         for (const id in this.props.hierarchy) {
-            parentTerms.push(<Divider />)
             parentTerms.push(<MenuItem sx={{ pl: 2}} key={id} value={id}><b>{this.props.IDs[id].term}</b></MenuItem>)
             parentTerms = parentTerms.concat(this.getSubItems(this.props.hierarchy[id], 2))
         }
@@ -221,6 +246,19 @@ export default class EditForm extends React.Component {
         return selectTerms
     }
 
+    insertIntoHierarchy = (hierarchy, id, pid, itemHierarchy) => {
+        // Inserts the item as a new element under whatever the parent is set to
+        let currID = pid
+        let idPath = [currID]
+        while (this.state.editIDs[currID].parent !== null) {
+            currID = this.state.editIDs[currID].parent
+            idPath.push(currID)
+        }
+        idPath.reverse()
+        hierarchy[idPath[0]] = this.recursiveDictAdd(hierarchy[idPath[0]], idPath.slice(1), id, itemHierarchy)
+        return hierarchy
+    }
+
     render() {
         return (
             <>
@@ -232,7 +270,7 @@ export default class EditForm extends React.Component {
                     justifyContent="space-between">
 
                     <h1>Dictionary Bulk Edit</h1>
-                    <Button variant="contained" size="large" onClick={this.bulkClick}>Finish Editing</Button>
+                    <Button variant="contained" size="large" onClick={this.finishEditing}>Finish Editing</Button>
                 </Grid>
 
 
@@ -248,7 +286,6 @@ export default class EditForm extends React.Component {
                                 selectTerms={this.state.selectTerms[index]}
                                 content={item}
                                 index={index}
-                                getItems={this.getItems}
                                 editCallback={this.editTerm}
                                 />
                         )

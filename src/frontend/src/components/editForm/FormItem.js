@@ -38,6 +38,7 @@ export default class FormItem extends React.Component {
                                 id: 0,
                                 warningModal: true
                             })
+                            this.props.editCallback(this.props.index, prevState)
                             return
                         }
                     })
