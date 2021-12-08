@@ -94,7 +94,7 @@ class databaseConnection:
                 self.editTerm(int(id), content[id])
             else:
                 if int(content[id]['parent_id']) < 0:
-                    content[id]['parent_id'] = tempIDs[content[id]['parent_id']]
+                    content[id]['parent_id'] = tempIDs[str(content[id]['parent_id'])]
                 cursor.execute(f"INSERT INTO hierarchy(parent_id, term) VALUES ({content[id]['parent_id']}, '{content[id]['term']}')")
                 cursor.execute(f"INSERT INTO data(term, definition, synonyms, acronyms) VALUES ('{content[id]['term']}', '{content[id]['definition']}', '{content[id]['synonyms']}', '{content[id]['acronyms']}')")
                 cursor.execute("SELECT last_insert_rowid()")
