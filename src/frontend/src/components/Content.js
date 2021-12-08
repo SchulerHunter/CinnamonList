@@ -93,10 +93,11 @@ export default class Content extends React.Component {
         } else {
             if (this.state.synonymEdit) {
                 const syn = this.state.syn.trim().replace(/  +/gm, " ").replace(/( [\r\n]|[\r\n] )/gm, "\n").replace(/[\r\n]+/gm, ";")
-                if (syn !== this.props.content.syn.join(";")) {
+                const uniqueSyns = [...new Set(syn.split(";"))].join(";")
+                if (uniqueSyns !== this.props.content.syn.join(";")) {
                     const content = {
                         definition: this.state.def,
-                        synonyms: syn,
+                        synonyms: uniqueSyns,
                         acronyms: this.state.acr.replace(/[\r\n]/gm, ";")
                     }
     
@@ -123,11 +124,12 @@ export default class Content extends React.Component {
         } else {
             if (this.state.acronymEdit) {
                 const acr = this.state.acr.trim().replace(/  +/gm, " ").replace(/( [\r\n]|[\r\n] )/gm, "\n").replace(/[\r\n]+/gm, ";")
-                if (acr !== this.props.content.acr.join(";")) {
+                const uniqueAcrs = [...new Set(acr.split(";"))].join(";")
+                if (uniqueAcrs !== this.props.content.acr.join(";")) {
                     const content = {
                         definition: this.state.def,
                         synonyms: this.state.syn.replace(/[\r\n]/gm, ";"),
-                        acronyms: acr
+                        acronyms: uniqueAcrs
                     }
     
                     this.props.editTermCallback(content)

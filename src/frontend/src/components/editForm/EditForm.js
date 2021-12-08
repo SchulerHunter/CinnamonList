@@ -35,24 +35,23 @@ export default class EditForm extends React.Component {
     finishEditing = () => {
         let content = {}
         this.state.formItems.forEach((item, index) => {
-            if (item.id === 0) {
-                content[this.indexToId[index]] = {
-                    id: this.indexToId[index],
-                    parent_id: item.pid,
-                    term: item.term,
-                    definition: item.def.trim().replace(/  +/gm, " ").replace(/( [\r\n]|[\r\n] )/gm, "\n").replace(/[\r\n][\r\n]+/gm, "\n\n"),
-                    synonyms: item.syn.trim().replace(/  +/gm, " ").replace(/( [\r\n]|[\r\n] )/gm, "\n").replace(/[\r\n]+/gm, ";"),
-                    acronyms: item.acr.trim().replace(/  +/gm, " ").replace(/( [\r\n]|[\r\n] )/gm, "\n").replace(/[\r\n]+/gm, ";")
-                }
-            } else {
-                content[item.id] = {
-                    id: item.id,
-                    parent_id: item.pid,
-                    term: item.term,
-                    definition: item.def.trim().replace(/  +/gm, " ").replace(/( [\r\n]|[\r\n] )/gm, "\n").replace(/[\r\n][\r\n]+/gm, "\n\n"),
-                    synonyms: item.syn.trim().replace(/  +/gm, " ").replace(/( [\r\n]|[\r\n] )/gm, "\n").replace(/[\r\n]+/gm, ";"),
-                    acronyms: item.acr.trim().replace(/  +/gm, " ").replace(/( [\r\n]|[\r\n] )/gm, "\n").replace(/[\r\n]+/gm, ";")
-                }
+            let id = item.id
+            if (id === 0) {
+                id = this.indexToId[index]
+            }
+
+            const syn = item.syn.trim().replace(/  +/gm, " ").replace(/( [\r\n]|[\r\n] )/gm, "\n").replace(/[\r\n]+/gm, ";")
+            const uniqueSyns = [...new Set(syn.split(";"))].join(";")
+            const acr = item.acr.trim().replace(/  +/gm, " ").replace(/( [\r\n]|[\r\n] )/gm, "\n").replace(/[\r\n]+/gm, ";")
+            const uniqueAcrs = [...new Set(acr.split(";"))].join(";")
+
+            content[id] = {
+                id: id,
+                parent_id: item.pid,
+                term: item.term,
+                definition: item.def.trim().replace(/  +/gm, " ").replace(/( [\r\n]|[\r\n] )/gm, "\n").replace(/[\r\n][\r\n]+/gm, "\n\n"),
+                synonyms: uniqueSyns,
+                acronyms: uniqueAcrs
             }
         })
 
@@ -277,19 +276,17 @@ export default class EditForm extends React.Component {
                 {/* Card Area */}
                 <Stack paddingX="5rem" direction="column" sx={{justifyContent: 'space-between'}}>
 
-                    { this.state.formItems.map((item, index) => {
-                        return (
-                            <FormItem
-                                hierarchy={this.state.editHierarchy}
-                                IDs={this.state.editIDs}
-                                parentTerms={this.state.parentTerms}
-                                selectTerms={this.state.selectTerms[index]}
-                                content={item}
-                                index={index}
-                                editCallback={this.editTerm}
-                                />
-                        )
-                    })}
+                    { this.state.formItems.map((item, index) => (
+                        <FormItem
+                            hierarchy={this.state.editHierarchy}
+                            IDs={this.state.editIDs}
+                            parentTerms={this.state.parentTerms}
+                            selectTerms={this.state.selectTerms[index]}
+                            content={item}
+                            index={index}
+                            editCallback={this.editTerm}
+                            />
+                    ))}
 
                     {/* Add new card button */}
                     <Grid
