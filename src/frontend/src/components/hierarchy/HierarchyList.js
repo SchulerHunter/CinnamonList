@@ -1,5 +1,5 @@
 import React from 'react'
-import {Card, CardContent, Divider, List, ListSubheader} from '@mui/material'
+import {Card, CardContent, List, ListSubheader} from '@mui/material'
 
 import ListItem from './ListItem'
 
@@ -9,7 +9,7 @@ export default class HierarchyList extends React.Component {
             <Card sx={{bgcolor: '#f5f5f5'}}>
             <CardContent>
                 <List
-                    sx={{ bgcolor: '#f5f5f5'}}
+                    sx={{ bgcolor: '#f5f5f5', overflow: 'auto', maxHeight: '30rem'}}
                     component="nav"
                     aria-labelledby="nested-list-subheader"
                     subheader={
@@ -19,20 +19,18 @@ export default class HierarchyList extends React.Component {
                     }>
 
                     { Object.keys(this.props.hierarchy).length > 0 &&
-                        <div style={{overflow: 'auto', maxHeight: '30rem'}}>
-                            { Object.keys(this.props.hierarchy).map(id => (
-                                <ListItem
-                                    id={id}
-                                    pl={0}
-                                    idPath={this.props.idPath}
-                                    IDs={this.props.IDs}
-                                    hierarchy={this.props.hierarchy[id]}
-                                    dataCallback={this.props.dataCallback}
-                                />
-                            ))}
-                        </div>
+                        Object.keys(this.props.hierarchy).map(id => (
+                            <ListItem
+                                key={id}
+                                id={id}
+                                pl={0}
+                                idPath={this.props.idPath}
+                                IDs={this.props.IDs}
+                                hierarchy={this.props.hierarchy[id]}
+                                dataCallback={this.props.dataCallback}
+                            />
+                        ))
                     }
-                    <Divider />
                 </List>
             </CardContent>
         </Card>

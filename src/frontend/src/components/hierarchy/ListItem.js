@@ -1,5 +1,5 @@
 import React from 'react'
-import {Collapse, Divider, List, ListItemButton, ListItemText} from '@mui/material'
+import {Collapse, List, ListItemButton, ListItemText} from '@mui/material'
 import {ExpandLess, ExpandMore} from '@mui/icons-material'
 
 export default class ListItem extends React.Component{
@@ -10,7 +10,6 @@ export default class ListItem extends React.Component{
     render() {
         return(
         <>
-            <Divider />
             <ListItemButton key={this.props.id} sx={{ pl: this.props.pl }} onClick={this.clickHandler}>
                 <ListItemText primary={this.props.IDs[this.props.id].term} />
                 { Object.keys(this.props.hierarchy).length > 0 && 
@@ -23,8 +22,9 @@ export default class ListItem extends React.Component{
             { Object.keys(this.props.hierarchy).length > 0 && 
                 <Collapse in={this.props.idPath.includes(this.props.id)} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
-                        { Object.keys(this.props.hierarchy).map(id => (
-                            <ListItem 
+                        { Object.keys(this.props.hierarchy).map((id) => (
+                            <ListItem
+                                key={id}
                                 id={id}
                                 idPath={this.props.idPath}
                                 pl={this.props.pl+2}
