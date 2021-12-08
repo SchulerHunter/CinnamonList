@@ -62,7 +62,7 @@ export default class Content extends React.Component {
             })
         } else {
             if (this.state.definitionEdit) {
-                const def = this.state.def.trim().replace(/  +/gm, " ").replace(/( [\r\n]|[\r\n] )/gm, "\n").replace(/[\r\n][\r\n]+/gm, "\n\n")
+                const def = this.state.def.trim().replace(/  +/gm, " ").replace(/ ?([\r\n]+) ?/gm, "$1").replace(/[\r\n]{2,}/gm, "\n\n")
                 if (def !== this.props.content.def) {
                     const content = {
                         definition: def,
@@ -92,7 +92,7 @@ export default class Content extends React.Component {
             })
         } else {
             if (this.state.synonymEdit) {
-                const syn = this.state.syn.trim().replace(/  +/gm, " ").replace(/( [\r\n]|[\r\n] )/gm, "\n").replace(/[\r\n]+/gm, ";")
+                const syn = this.state.syn.trim().replace(/  +/gm, " ").replace(/ ?[\r\n]+ ?/gm, ";")
                 const uniqueSyns = [...new Set(syn.split(";"))].join(";")
                 if (uniqueSyns !== this.props.content.syn.join(";")) {
                     const content = {
@@ -123,7 +123,7 @@ export default class Content extends React.Component {
             })
         } else {
             if (this.state.acronymEdit) {
-                const acr = this.state.acr.trim().replace(/  +/gm, " ").replace(/( [\r\n]|[\r\n] )/gm, "\n").replace(/[\r\n]+/gm, ";")
+                const acr = this.state.acr.trim().replace(/  +/gm, " ").replace(/ [\r\n]+ /gm, ";")
                 const uniqueAcrs = [...new Set(acr.split(";"))].join(";")
                 if (uniqueAcrs !== this.props.content.acr.join(";")) {
                     const content = {
