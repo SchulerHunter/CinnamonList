@@ -13,6 +13,8 @@ export default class FormItem extends React.Component {
             this.width = "22.5%"
         }
 
+        this.termTimer = null
+
         this.state = {
             id: this.props.content.id,
             pid: this.props.content.pid,
@@ -23,14 +25,27 @@ export default class FormItem extends React.Component {
             warningModal: false
         }
     }
+
+    shouldComponentUpdate = (nextProps, nextState) => {
+        return (nextState.id !== this.state.id ||
+                nextState.pid !== this.state.pid ||
+                nextState.term !== this.state.term ||
+                nextState.def !== this.state.def ||
+                nextState.syn !== this.state.syn ||
+                nextState.acr !== this.state.acr ||
+                nextProps.newTerms)
+    }
     
     componentDidUpdate = (prevProps, prevState) => {
-        if (prevProps.content.id !== this.state.id ||
-            prevProps.content.pid !== this.state.pid ||
-            prevProps.content.term !== this.state.term ||
-            prevProps.content.def !== this.state.def ||
-            prevProps.content.syn !== this.state.syn ||
-            prevProps.content.acr !== this.state.acr) {
+        clearTimeout(this.termTimer)
+        if (this.state.term && this.state.term !== prevState.term) {
+            this.termTimer = setTimeout(this.termFinished, 2000)
+        }
+        if (prevState.id !== this.state.id ||
+            prevState.pid !== this.state.pid ||
+            prevState.def !== this.state.def ||
+            prevState.syn !== this.state.syn ||
+            prevState.acr !== this.state.acr) {
                 if (prevState.id === 0 && prevState.id !== this.state.id) {
                     Object.values(this.props.IDs).forEach((val) => {
                         if (val.parent === prevProps.content.id) {
@@ -47,10 +62,8 @@ export default class FormItem extends React.Component {
             }
     }
 
-
-
     onIDChange = (event) => {
-        const id = event.target.value
+        const id = parseInt(event.target.value)
         if (id === 0) {
             this.width = "15%"
             this.setState({
@@ -77,7 +90,7 @@ export default class FormItem extends React.Component {
     }
 
     onPIDChange = (event) => {
-        this.setState({pid: event.target.value})
+        this.setState({pid: parseInt(event.target.value)})
     }
 
     onTermChange = (event) => {
@@ -98,6 +111,10 @@ export default class FormItem extends React.Component {
 
     closeModal = () => {
         this.setState({warningModal: false})
+    }
+
+    termFinished = () => {
+        this.props.editCallback(this.props.index, this.state)
     }
 
     render() {

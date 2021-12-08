@@ -19,15 +19,15 @@ export default class EditForm extends React.Component {
 
         this.lowestID = -1
         this.indexToId = {}
-
-        let parentTerms = this.getItems()
-        let selectTerms =[parentTerms]
+        this.newTerms = true
+        
+        let parentTerms = this.getItems(this.props.hierarchy, this.props.IDs)
 
         this.state = {
             formItems: [Object.assign(this.newItem)],
-            editHierarchy: this.props.hierarchy,
-            editIDs: this.props.IDs,
-            selectTerms: selectTerms,
+            editHierarchy: JSON.parse(JSON.stringify(this.props.hierarchy)),
+            editIDs: JSON.parse(JSON.stringify(this.props.IDs)),
+            selectTerms: parentTerms,
             parentTerms: parentTerms
         }
     }
@@ -40,16 +40,16 @@ export default class EditForm extends React.Component {
                 id = this.indexToId[index]
             }
 
-            const syn = item.syn.trim().replace(/  +/gm, " ").replace(/( [\r\n]|[\r\n] )/gm, "\n").replace(/[\r\n]+/gm, ";")
+            const syn = item.syn.trim().replace(/  +/gm, " ").replace(/ ?[\r\n]+ ?/gm, ";")
             const uniqueSyns = [...new Set(syn.split(";"))].join(";")
-            const acr = item.acr.trim().replace(/  +/gm, " ").replace(/( [\r\n]|[\r\n] )/gm, "\n").replace(/[\r\n]+/gm, ";")
+            const acr = item.acr.trim().replace(/  +/gm, " ").replace(/ ?[\r\n]+ ?/gm, ";")
             const uniqueAcrs = [...new Set(acr.split(";"))].join(";")
 
             content[id] = {
                 id: id,
                 parent_id: item.pid,
                 term: item.term,
-                definition: item.def.trim().replace(/  +/gm, " ").replace(/( [\r\n]|[\r\n] )/gm, "\n").replace(/[\r\n][\r\n]+/gm, "\n\n"),
+                definition: item.def.trim().replace(/  +/gm, " ").replace(/ ?([\r\n]+) ?/gm, "$1").replace(/[\r\n]{2,}/gm, "\n\n"),
                 synonyms: uniqueSyns,
                 acronyms: uniqueAcrs
             }
@@ -60,13 +60,9 @@ export default class EditForm extends React.Component {
 
     addTerm = () => {
         let formItems = this.state.formItems
-        let selectTerms = this.state.selectTerms
         formItems.push(Object.assign(this.newItem))
-        selectTerms.push([])
-        selectTerms = this.buildSelectTerms(this.state.parentTerms, selectTerms, formItems)
         this.setState({
             formItems: formItems,
-            selectTerms: selectTerms
         })
     }
 
@@ -87,6 +83,7 @@ export default class EditForm extends React.Component {
         let hierarchy = this.state.editHierarchy
         let parentTerms = this.state.parentTerms
         let selectTerms = this.state.selectTerms
+        this.newTerms = false
 
         if (content.id === 0 && content.pid !== -99999) {
             // This code block only runs if a new item is being created and has a parent assigned
@@ -142,7 +139,6 @@ export default class EditForm extends React.Component {
                     hierarchy[id] = itemHierarchy
                 } else {
                     // Insert the item as a new element under whatever the parent is set to
-                    console.log(content.term)
                     ids[id] = {parent: content.pid, term: content.term}
                     hierarchy = this.insertIntoHierarchy(hierarchy, id, content.pid, itemHierarchy)
                 }
@@ -152,11 +148,13 @@ export default class EditForm extends React.Component {
             ids[id] = {parent: ids[id].parent, term: content.term}
         }
 
-        // Rebuilds the parentTerms and selectTerms for all items if the id or parent item of the term has changed
-        if (formItems[index].id !== content.id || formItems[index].pid !== content.pid) {
+        // Rebuilds the parentTerms and selectTerms for all items if the id of any term or parent item of a new term has changed
+        if (((formItems[index].id > 0 || content.id > 0) && formItems[index].id !== content.id) ||
+            ((formItems[index].id === 0 || content.id === 0) && ((formItems[index].pid !== content.pid && content.term) || formItems[index].term !== content.term))) {
+            this.newTerms = true
             formItems[index] = content
-            parentTerms = this.getItems()
-            selectTerms = this.buildSelectTerms(parentTerms, selectTerms, formItems)
+            parentTerms = this.getItems(hierarchy, ids)
+            selectTerms = this.buildSelectTerms(parentTerms, formItems)
         } else {
             formItems[index] = content
         }
@@ -196,29 +194,26 @@ export default class EditForm extends React.Component {
         }
     }
 
-    getItems = () => {
+    getItems = (hierarchy, IDs) => {
         let parentTerms = []
-        for (const id in this.props.hierarchy) {
-            parentTerms.push(<MenuItem sx={{ pl: 2}} key={id} value={id}><b>{this.props.IDs[id].term}</b></MenuItem>)
-            parentTerms = parentTerms.concat(this.getSubItems(this.props.hierarchy[id], 2))
+        for (const id in hierarchy) {
+            parentTerms.push(<MenuItem sx={{ pl: 2}} key={id} value={id}><b>{IDs[id].term}</b></MenuItem>)
+            parentTerms = parentTerms.concat(this.getSubItems(hierarchy[id], IDs, 2))
         }
         return parentTerms
     }
 
-    getSubItems = (hierarchy, pl) => {
+    getSubItems = (hierarchy, IDs, pl) => {
         let results = []
-        for (let subId in hierarchy) {
-            results.push(<MenuItem sx={{ pl: pl+2}} key={subId} value={subId}>{this.props.IDs[subId].term}</MenuItem>)
-            results = results.concat(this.getSubItems(hierarchy[subId], pl+2))
+        for (const subId in hierarchy) {
+            results.push(<MenuItem sx={{ pl: pl+2}} key={subId} value={subId}>{IDs[subId].term}</MenuItem>)
+            results = results.concat(this.getSubItems(hierarchy[subId], IDs, pl+2))
         }
         return results
     }
 
-    buildSelectTerms = (parentTerms, selectTerms, formItems) => {
-        for (const index in selectTerms) {
-            selectTerms[index] = []
-        }
-
+    buildSelectTerms = (parentTerms, formItems) => {
+        let selectTerms = []
         for (const term of parentTerms) {
             let selected = false
             let index = 0
@@ -233,11 +228,9 @@ export default class EditForm extends React.Component {
                 }
 
                 if (!selected) {
-                    for (const selectIndex in selectTerms) {
-                        selectTerms[selectIndex].push(term)
-                    }
+                    selectTerms.push(term)
                 } else {
-                    selectTerms[index].push(term)
+                    selectTerms.push(React.cloneElement(term, {disabled: true}))
                 }
             }
         }
@@ -278,10 +271,12 @@ export default class EditForm extends React.Component {
 
                     { this.state.formItems.map((item, index) => (
                         <FormItem
+                            key={index}
                             hierarchy={this.state.editHierarchy}
                             IDs={this.state.editIDs}
+                            newTerms={this.newTerms}
                             parentTerms={this.state.parentTerms}
-                            selectTerms={this.state.selectTerms[index]}
+                            selectTerms={this.state.selectTerms}
                             content={item}
                             index={index}
                             editCallback={this.editTerm}
