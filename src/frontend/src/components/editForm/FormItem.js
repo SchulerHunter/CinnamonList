@@ -125,15 +125,19 @@ export default class FormItem extends React.Component {
     }
 
     testNewHierarchy = () => {
-        let currID = this.state.pid
-        let idPath = [currID]
-        while (this.props.IDs[currID].parent !== null) {
-            currID = this.props.IDs[currID].parent
-            idPath.push(currID)
+        if (this.state.pid !== 0) {
+            let currID = this.state.pid
+            let idPath = [currID]
+            while (this.props.IDs[currID].parent !== null) {
+                currID = this.props.IDs[currID].parent
+                idPath.push(currID)
+            }
+            idPath.reverse()
+        
+            return this.recursiveDictTest(this.props.hierarchy[idPath[0]], idPath.slice(1), this.props.indexToId[this.props.index])
+        } else {
+            return (this.props.hierarchy[this.props.indexToId[this.props.index]] !== undefined)
         }
-        idPath.reverse()
-    
-        return this.recursiveDictTest(this.props.hierarchy[idPath[0]], idPath.slice(1), this.props.indexToId[this.props.index])
     }
 
     recursiveDictTest = (subDict, keys, itemKey) => {
