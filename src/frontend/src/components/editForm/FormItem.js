@@ -14,6 +14,7 @@ export default class FormItem extends React.Component {
         }
 
         this.termTimer = null
+        this.parentTerms = [...this.props.parentTerms]
 
         this.state = {
             id: this.props.content.id,
@@ -41,29 +42,35 @@ export default class FormItem extends React.Component {
         if (this.state.term && this.state.term !== prevState.term) {
             this.termTimer = setTimeout(this.termFinished, 2000)
         }
+
         if (prevState.id !== this.state.id ||
             prevState.pid !== this.state.pid ||
             prevState.def !== this.state.def ||
             prevState.syn !== this.state.syn ||
             prevState.acr !== this.state.acr) {
-                if (prevState.id === 0 && prevState.id !== this.state.id) {
-                    Object.values(this.props.IDs).forEach((val) => {
-                        if (val.parent === prevProps.content.id) {
-                            this.setState({
-                                id: 0,
-                                warningModal: true
-                            })
-                            this.props.editCallback(this.props.index, prevState)
-                            return
-                        }
-                    })
-                }
                 this.props.editCallback(this.props.index, this.state)
             }
     }
 
     onIDChange = (event) => {
         const id = parseInt(event.target.value)
+        if (this.state.id === 0 && id !== this.state.id) {
+            let isParent = false
+            for (const item of Object.values(this.props.IDs)) {
+                if (item.parent === this.props.indexToId[this.props.index]) {
+                    isParent = true
+                    break
+                }
+            }
+            if (isParent) {
+                this.setState({
+                    id: 0,
+                    warningModal: true
+                })
+                return
+            }
+        }
+
         if (id === 0) {
             this.width = "15%"
             this.setState({
@@ -117,7 +124,83 @@ export default class FormItem extends React.Component {
         this.props.editCallback(this.props.index, this.state)
     }
 
+    testNewHierarchy = () => {
+        let currID = this.state.pid
+        let idPath = [currID]
+        while (this.props.IDs[currID].parent !== null) {
+            currID = this.props.IDs[currID].parent
+            idPath.push(currID)
+        }
+        idPath.reverse()
+    
+        return this.recursiveDictTest(this.props.hierarchy[idPath[0]], idPath.slice(1), this.props.indexToId[this.props.index])
+    }
+
+    recursiveDictTest = (subDict, keys, itemKey) => {
+        if (subDict === undefined) {
+            return false
+        }
+        if (keys.length === 0) {
+            return (subDict[itemKey] !== undefined)
+        } else {
+            return this.recursiveDictGet(subDict[keys[0]], keys.slice(1), itemKey)
+        }
+    }
+
+    recursiveDictGet = (subDict, keys, itemKey) => {
+        if (keys.length === 0) {
+            return subDict[itemKey]
+        } else {
+            return this.recursiveDictGet(subDict[keys[0]], keys.slice(1), itemKey)
+        }
+    }
+
+    recursiveDictToList = (subDict) => {
+        let keys = Object.keys(subDict)
+        Object.keys(subDict).forEach((key) => {
+            keys = keys.concat(this.recursiveDictToList(subDict[key]))
+        })
+        return keys
+    }
+
     render() {
+        if (this.state.id === 0 && this.props.newTerms) {
+            this.parentTerms = [...this.props.parentTerms]
+            if (this.state.pid !== -99999 && this.testNewHierarchy()) {
+                // Only run this code block if the item has a parent and is updated in the hierarchy
+                let itemHierarchy = {}
+                if (this.state.pid !== 0) {
+                    // Fetch the ID Path to the term
+                    let currID = this.state.pid
+                    let idPath = [currID]
+                    while (this.props.IDs[currID].parent !== null) {
+                        currID = this.props.IDs[currID].parent
+                        idPath.push(currID)
+                    }
+                    idPath.reverse()
+                    // Recursively travel through the hierarchy to find the sub tree
+                    itemHierarchy = this.recursiveDictGet(this.props.hierarchy[idPath[0]], idPath.slice(1), this.props.indexToId[this.props.index])
+                } else {
+                    // If the item is a root, it can be easily selected
+                    itemHierarchy = this.props.hierarchy[this.props.indexToId[this.props.index]]
+                }
+
+                // Build a list of all items in the subhierarchy of the item
+                let itemKeys = this.recursiveDictToList(itemHierarchy)
+                itemKeys = itemKeys.map((val) => {
+                    return parseInt(val)
+                })
+                itemKeys.push(this.props.indexToId[this.props.index])
+
+                // Disable every item which is in the sub hierarchy of the term, including itself
+                this.parentTerms.forEach((item, index) => {
+                    if (itemKeys.includes(parseInt(item.key))) {
+                        this.parentTerms[index] = React.cloneElement(this.parentTerms[index], {disabled: true})
+                    }
+                })
+            }
+        }
+
         return (
             <>
                 <Card key={this.props.index} sx={{boxShadow: 3, width: "100%", marginBottom: "1rem"}}>
@@ -145,7 +228,7 @@ export default class FormItem extends React.Component {
 
                                             <MenuItem key={-99999} value={-99999} disabled>Select a parent term</MenuItem>
                                             <MenuItem key={0} value={0}><b>None</b></MenuItem>
-                                            { this.props.parentTerms }
+                                            { this.parentTerms }
                                         </Select>
                                     </FormControl>
 

@@ -91,6 +91,9 @@ export default class EditForm extends React.Component {
             let itemHierarchy = {}
             if (index in this.indexToId) {
                 id = this.indexToId[index]
+                
+                // Update the term in the ids list
+                ids[id] = {parent: ids[id].parent, term: content.term}
 
                 // Run this code block if the item has a temporary ID
                 if (formItems[index].pid !== content.pid) {
@@ -143,9 +146,6 @@ export default class EditForm extends React.Component {
                     hierarchy = this.insertIntoHierarchy(hierarchy, id, content.pid, itemHierarchy)
                 }
             }
-
-            // Update the term in the ids list
-            ids[id] = {parent: ids[id].parent, term: content.term}
         }
 
         // Rebuilds the parentTerms and selectTerms for all items if the id of any term or parent item of a new term has changed
@@ -272,13 +272,14 @@ export default class EditForm extends React.Component {
                     { this.state.formItems.map((item, index) => (
                         <FormItem
                             key={index}
+                            index={index}
+                            content={item}
+                            indexToId={this.indexToId}
                             hierarchy={this.state.editHierarchy}
                             IDs={this.state.editIDs}
                             newTerms={this.newTerms}
                             parentTerms={this.state.parentTerms}
                             selectTerms={this.state.selectTerms}
-                            content={item}
-                            index={index}
                             editCallback={this.editTerm}
                             />
                     ))}
