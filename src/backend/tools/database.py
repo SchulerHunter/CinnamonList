@@ -22,7 +22,7 @@ class databaseConnection:
     # Returns the object associated to an item in the data table
     def fetchItem(self, id):
         cursor = self.connectDB().cursor()
-        cursor.execute(f"SELECT * FROM data WHERE id = ?", [id])
+        cursor.execute("SELECT * FROM data WHERE id = ?", [id])
         term = cursor.fetchall()[0]
         return {"id": term[0], "term": term[1], "def": term[2], "syn": term[3], "acr": term[4]}
 
@@ -65,7 +65,7 @@ class databaseConnection:
     def searchKey(self, key):
         # Retrieve results from naive search
         cursor = self.connectDB().cursor()
-        cursor.execute(f"SELECT id, term, definition, synonyms, acronyms FROM data WHERE definition LIKE '%?%' OR synonyms LIKE '%?%' OR acronyms LIKE '%?%' OR term LIKE '%?%'", [key, key, key, key])
+        cursor.execute("SELECT id, term, definition, synonyms, acronyms FROM data WHERE definition LIKE '%?%' OR synonyms LIKE '%?%' OR acronyms LIKE '%?%' OR term LIKE '%?%'", [key, key, key, key])
         results = cursor.fetchall()
 
         # Create a ranking of the number of matches in data
@@ -81,7 +81,7 @@ class databaseConnection:
     def editTerm(self, id, content):
         conn = self.connectDB()
         cursor = conn.cursor()
-        cursor.execute(f"UPDATE data SET definition=?, synonyms=?, acronyms=? WHERE id=?", [content['definition'], content['synonyms'], content['acronyms'], id])
+        cursor.execute("UPDATE data SET definition=?, synonyms=?, acronyms=? WHERE id=?", [content['definition'], content['synonyms'], content['acronyms'], id])
         conn.commit()
         return
     
@@ -97,8 +97,8 @@ class databaseConnection:
                     content[id]['parent_id'] = tempIDs[str(content[id]['parent_id'])]
                 if int(content[id]['parent_id']) == 0:
                     content[id]['parent_id'] = None
-                cursor.execute(f"INSERT INTO hierarchy(parent_id, term) VALUES (?, ?)", [content[id]['parent_id'], content[id]['term']])
-                cursor.execute(f"INSERT INTO data(term, definition, synonyms, acronyms) VALUES (?, ?, ?, ?)", [content[id]['term'],  content[id]['definition'], content[id]['synonyms'], content[id]['acronyms']])
+                cursor.execute("INSERT INTO hierarchy(parent_id, term) VALUES (?, ?)", [content[id]['parent_id'], content[id]['term']])
+                cursor.execute("INSERT INTO data(term, definition, synonyms, acronyms) VALUES (?, ?, ?, ?)", [content[id]['term'],  content[id]['definition'], content[id]['synonyms'], content[id]['acronyms']])
                 cursor.execute("SELECT last_insert_rowid()")
                 tempIDs[id] = cursor.fetchall()[0][0]
                 conn.commit()
