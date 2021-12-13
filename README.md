@@ -10,11 +10,9 @@ Because of a lack of energy industry standards, energy companies create their ow
 2. Node (I recommend using [nvm](https://github.com/nvm-sh/nvm))
 3. Node Package Manager (NPM) (Install with node)
 
-## Getting Started
+## Backend
 
-The following steps are meant to set up a development environment for Linux or Mac operating ssytems. The steps will need to be modified to develop in windows.
-
-### Backend
+### Getting Started
 
 First install the Python dependencies stored in `src/backend/requirements.txt`
 
@@ -32,26 +30,24 @@ Both of these commands can be added to the `~/.bashrc` file to be run on startup
 
 Once these steps are complete, the backend can be run executing the command `flask run` in the `src/backend` directory.
 
-### Frontend
-
-In order to launch the frontend, navigate to the directory `src/frontend/src` and execute the command `npm run` and it will begin building the site.
-
-## Development
-
-### Backend
+### Development
 
 When making changes to the backend, it is generally required to relaunch the flask server in order to see these changes.
 
-### Frontend
-
-When making changes to the frontend code, react will automatically update whenever a file is changed. This prevent the need to releuch the react code when making changes.
-
-## Testing
-
-### Backend
+### Testing
 
 Tests can be added to the `tst` folder in `src/backend/tst` as regular python files using th unittest module.
 
-### Frontend
+## Frontend
 
-Tests can be added as `.test.js` files within the source code. They can render the react components and test by content on the sreen. These tests are run with `npm test` in the `src/front/src` directory.
+### Getting Started
+
+In order to launch the frontend, navigate to the directory `src/frontend/src` and execute the command `npm run` and it will begin building the site.
+
+### Development
+
+When making changes to the frontend code, react will automatically update whenever a file is changed. This prevent the need to releuch the react code when making changes.
+
+### Testing
+
+Tests can be added as `*.test.js` files within the source code. They can render the react components and test by content on the screen. These tests are run with `npm test` in the `src/frontend/src` directory.
