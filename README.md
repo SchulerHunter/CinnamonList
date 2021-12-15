@@ -42,7 +42,7 @@ Tests can be added to the `tst` folder in `src/backend/tst` as regular python fi
 
 ### Getting Started
 
-In order to launch the frontend, navigate to the directory `src/frontend/src` and execute the command `npm run` and it will begin building the site.
+In order to launch the frontend, navigate to the directory `src/frontend/src` and execute the command `npm install` to install all of the node package dependencies. Once that is complete, run `npm run` and it will begin building and running the site on localhost port 3000.
 
 ### Development
 
